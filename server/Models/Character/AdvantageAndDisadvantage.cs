@@ -1,4 +1,4 @@
-public class Advantage
+public class AdvantageAndDisadvantage
 {
     public long Id { get; set; }
 
@@ -6,7 +6,9 @@ public class Advantage
     public string Description { get; set; }
     public int Price { get; set; }
 
-    public Disadvantage(string title, int price)
+    public AffectedAttribute AffectedAttribute { get; set; }
+
+    public AdvantageAndDisadvantage(string title, int price)
     {
         Title = title;
         Price = price;
