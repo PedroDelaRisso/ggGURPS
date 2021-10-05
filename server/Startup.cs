@@ -41,9 +41,11 @@ namespace server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
+                app.UseStaticFiles();
                 app.UseSwaggerUI(c => {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "server v1");
                     c.RoutePrefix = string.Empty;
+                    c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
                 });
             }
 
