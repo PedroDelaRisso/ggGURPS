@@ -1,4 +1,4 @@
-public class Skills
+public class Skill
 {
     public long Id { get; set; }
 
@@ -6,5 +6,5 @@ public class Skills
     public string Description { get; set; }
     public int Difficulty { get; set; }
     public int Level { get; set; }
-    public int Attribute { get; set; } // change to an Enum later
+    public BaseAttribute Attribute { get; set; }
 }
