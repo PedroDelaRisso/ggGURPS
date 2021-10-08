@@ -463,3 +463,4 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 *.db
+server\wwwroot\swagger-ui\SwaggerDark.css
