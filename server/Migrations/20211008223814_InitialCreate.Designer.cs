@@ -10,7 +10,7 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211008214300_InitialCreate")]
+    [Migration("20211008223814_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,9 +34,6 @@ namespace server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("PlayerCharacterId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
@@ -44,8 +41,6 @@ namespace server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PlayerCharacterId");
 
                     b.ToTable("AdvantageAndDisadvantage");
                 });
@@ -69,15 +64,10 @@ namespace server.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.Property<long?>("PlayerCharacterId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PlayerCharacterId");
 
                     b.ToTable("Skill");
                 });
@@ -110,15 +100,10 @@ namespace server.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("PlayerCharacterId")
-                        .HasColumnType("bigint");
-
                     b.Property<double?>("Price")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PlayerCharacterId");
 
                     b.ToTable("Item");
                 });
@@ -182,22 +167,19 @@ namespace server.Migrations
             modelBuilder.Entity("AdvantageAndDisadvantage", b =>
                 {
                     b.HasOne("server.Models.PlayerCharacter", null)
-                        .WithMany("AdvantagesAndDisadvantages")
-                        .HasForeignKey("PlayerCharacterId");
+                        .WithMany("AdvantagesAndDisadvantages");
                 });
 
             modelBuilder.Entity("Skill", b =>
                 {
                     b.HasOne("server.Models.PlayerCharacter", null)
-                        .WithMany("Skills")
-                        .HasForeignKey("PlayerCharacterId");
+                        .WithMany("Skills");
                 });
 
             modelBuilder.Entity("server.Models.Item", b =>
                 {
                     b.HasOne("server.Models.PlayerCharacter", null)
-                        .WithMany("Inventory")
-                        .HasForeignKey("PlayerCharacterId");
+                        .WithMany("Inventory");
                 });
 
             modelBuilder.Entity("server.Models.PlayerCharacter", b =>

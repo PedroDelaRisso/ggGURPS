@@ -19,4 +19,3 @@ public enum BaseAttribute
     [Description("Perception")]
     Perception,
 }
-

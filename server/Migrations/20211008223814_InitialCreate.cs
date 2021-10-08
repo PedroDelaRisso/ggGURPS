@@ -60,18 +60,11 @@ namespace server.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<int>(type: "int", nullable: false),
-                    AffectedAttribute = table.Column<int>(type: "int", nullable: false),
-                    PlayerCharacterId = table.Column<long>(type: "bigint", nullable: true)
+                    AffectedAttribute = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AdvantageAndDisadvantage", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AdvantageAndDisadvantage_PlayerCharacters_PlayerCharacterId",
-                        column: x => x.PlayerCharacterId,
-                        principalTable: "PlayerCharacters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,18 +75,11 @@ namespace server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: true),
-                    Equipped = table.Column<bool>(type: "bit", nullable: true),
-                    PlayerCharacterId = table.Column<long>(type: "bigint", nullable: true)
+                    Equipped = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Item", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Item_PlayerCharacters_PlayerCharacterId",
-                        column: x => x.PlayerCharacterId,
-                        principalTable: "PlayerCharacters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,39 +92,17 @@ namespace server.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Difficulty = table.Column<int>(type: "int", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false),
-                    Attribute = table.Column<int>(type: "int", nullable: false),
-                    PlayerCharacterId = table.Column<long>(type: "bigint", nullable: true)
+                    Attribute = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Skill", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Skill_PlayerCharacters_PlayerCharacterId",
-                        column: x => x.PlayerCharacterId,
-                        principalTable: "PlayerCharacters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AdvantageAndDisadvantage_PlayerCharacterId",
-                table: "AdvantageAndDisadvantage",
-                column: "PlayerCharacterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Item_PlayerCharacterId",
-                table: "Item",
-                column: "PlayerCharacterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlayerCharacters_GameMasterId",
                 table: "PlayerCharacters",
                 column: "GameMasterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Skill_PlayerCharacterId",
-                table: "Skill",
-                column: "PlayerCharacterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
