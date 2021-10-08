@@ -25,8 +25,7 @@ public class GameMasterController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<GameMaster>> Get(long id)
     {
-        var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == id);
-        return Ok(gameMaster);
+        return Ok(await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == id));
     }
 
     [HttpPost]
@@ -51,8 +50,7 @@ public class GameMasterController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult<GameMaster>> Delete(long id)
     {
-        var gmToRemove = await _context.GameMasters.FirstOrDefaultAsync(gameMaster => gameMaster.Id == id);
-        _context.GameMasters.Remove(gmToRemove);
+        _context.GameMasters.Remove(await _context.GameMasters.FirstOrDefaultAsync(gameMaster => gameMaster.Id == id));
         await _context.SaveChangesAsync();
 
         return Ok();
