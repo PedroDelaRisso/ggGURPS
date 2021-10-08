@@ -16,7 +16,6 @@ public class PlayerCharacterController : ControllerBase
         _context = context;
     }
 
-
     [HttpGet]
     public async Task<List<PlayerCharacter>> Get()
     {
