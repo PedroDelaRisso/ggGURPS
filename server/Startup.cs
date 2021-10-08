@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using server.Models;
 
 namespace server
 {
@@ -32,6 +34,7 @@ namespace server
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ggGURPS", Version = "v1" });
             });
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(""));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
