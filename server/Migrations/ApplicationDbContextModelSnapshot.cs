@@ -45,7 +45,7 @@ namespace server.Migrations
 
                     b.HasIndex("PlayerCharacterId");
 
-                    b.ToTable("AdvantageAndDisadvantage");
+                    b.ToTable("AdvantagesAbdDisadvantages");
                 });
 
             modelBuilder.Entity("Skill", b =>
@@ -77,7 +77,7 @@ namespace server.Migrations
 
                     b.HasIndex("PlayerCharacterId");
 
-                    b.ToTable("Skill");
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("server.Models.GameMaster", b =>
@@ -118,7 +118,7 @@ namespace server.Migrations
 
                     b.HasIndex("PlayerCharacterId");
 
-                    b.ToTable("Item");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("server.Models.PlayerCharacter", b =>

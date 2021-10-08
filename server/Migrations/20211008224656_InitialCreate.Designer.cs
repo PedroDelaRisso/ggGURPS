@@ -10,7 +10,7 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211008223814_InitialCreate")]
+    [Migration("20211008224656_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,7 +42,7 @@ namespace server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AdvantageAndDisadvantage");
+                    b.ToTable("AdvantagesAbdDisadvantages");
                 });
 
             modelBuilder.Entity("Skill", b =>
@@ -69,7 +69,7 @@ namespace server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Skill");
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("server.Models.GameMaster", b =>
@@ -105,7 +105,7 @@ namespace server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Item");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("server.Models.PlayerCharacter", b =>
