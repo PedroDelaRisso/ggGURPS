@@ -34,7 +34,8 @@ namespace server
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ggGURPS", Version = "v1" });
             });
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source = database.db"));
+            var connectionString = Configuration.GetConnectionString("Default");
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
