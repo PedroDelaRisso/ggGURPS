@@ -25,11 +25,6 @@ namespace server.Models
         public int Will { get; set; }
         public int Perception { get; set; }
 
-        public ICollection<AdvantageAndDisadvantage> AdvantagesAndDisadvantages { get; set; }
-        public ICollection<Skill> Skills { get; set; }
-
-        public ICollection<Item> Inventory { get; set; }
-
         public long GameMasterId { get; set; }
         public GameMaster GameMaster { get; set; }
 
