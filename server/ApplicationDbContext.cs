@@ -6,7 +6,7 @@ namespace server.Models
     {
         public DbSet<PlayerCharacter> PlayerCharacters { get; set; }
         public DbSet<GameMaster> GameMasters { get; set; }
-        public DbSet<AdvantageAndDisadvantage> AdvantagesAbdDisadvantages { get; set; }
+        public DbSet<AdvantageAndDisadvantage> AdvantagesAndDisadvantages { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<Item> Items { get; set; }
 
