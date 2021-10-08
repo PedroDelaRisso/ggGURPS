@@ -6,7 +6,5 @@ namespace server.Models
         public string Name { get; set; }
         public double? Price { get; set; }
         public bool? Equipped { get; set; }
-
-        public long PlayerCharacterId { get; set; }
     }
 }
