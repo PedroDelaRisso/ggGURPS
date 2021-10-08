@@ -28,7 +28,7 @@ namespace server.Models
         public ICollection<AdvantageAndDisadvantage> AdvantagesAndDisadvantages { get; set; }
         public ICollection<Skill> Skills { get; set; }
 
-        public ICollection<IItem> Inventory { get; set; }
+        public ICollection<Item> Inventory { get; set; }
 
         public long GameMasterId { get; set; }
         public GameMaster GameMaster { get; set; }
