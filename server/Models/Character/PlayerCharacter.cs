@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace server.Models
 {
-    public class Character {
+    public class PlayerCharacter
+    {
         public long Id { get; set; }
 
         public string CharacterName { get; set; }
@@ -29,7 +30,10 @@ namespace server.Models
 
         public ICollection<IItem> Inventory { get; set; }
 
-        public Character(string characterName, string age, string gender)
+        public long GameMasterId { get; set; }
+        public GameMaster GameMaster { get; set; }
+
+        public PlayerCharacter(string characterName, string age, string gender)
         {
             CharacterName = characterName;
             Age = age;
