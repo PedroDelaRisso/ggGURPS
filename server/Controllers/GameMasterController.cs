@@ -61,7 +61,7 @@ public class GameMasterController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult<GameMasterOutputDeleteDTO>> Delete(long id)
     {
-        var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gameMaster => gameMaster.Id == id)
+        var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gameMaster => gameMaster.Id == id);
         var gameMasterDTO = new GameMasterOutputDeleteDTO(gameMaster.Id, gameMaster.Name);
         _context.GameMasters.Remove(gameMaster);
         await _context.SaveChangesAsync();
