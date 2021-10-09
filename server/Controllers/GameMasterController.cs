@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using server.DTOs;
 
 [ApiController]
 [Route("[controller]")]
@@ -60,11 +59,13 @@ public class GameMasterController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete(long id)
+    public async Task<ActionResult<GameMasterOutputDeleteDTO>> Delete(long id)
     {
-        _context.GameMasters.Remove(await _context.GameMasters.FirstOrDefaultAsync(gameMaster => gameMaster.Id == id));
+        var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gameMaster => gameMaster.Id == id)
+        var gameMasterDTO = new GameMasterOutputDeleteDTO(gameMaster.Id, gameMaster.Name);
+        _context.GameMasters.Remove(gameMaster);
         await _context.SaveChangesAsync();
 
-        return Ok();
+        return Ok(gameMasterDTO);
     }
 }
