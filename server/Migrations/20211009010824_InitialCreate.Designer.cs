@@ -4,12 +4,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using server.Models;
 
 namespace server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211008230955_InitialCreate")]
+    [Migration("20211009010824_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +19,7 @@ namespace server.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("server.Models.GameMaster", b =>
+            modelBuilder.Entity("GameMaster", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,15 +34,12 @@ namespace server.Migrations
                     b.ToTable("GameMasters");
                 });
 
-            modelBuilder.Entity("server.Models.PlayerCharacter", b =>
+            modelBuilder.Entity("PlayerCharacter", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Age")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CharacterName")
                         .HasColumnType("nvarchar(max)");
@@ -57,9 +53,6 @@ namespace server.Migrations
                     b.Property<long>("GameMasterId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Health")
                         .HasColumnType("int");
 
@@ -69,19 +62,7 @@ namespace server.Migrations
                     b.Property<int>("Inteligence")
                         .HasColumnType("int");
 
-                    b.Property<int>("Perception")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PlayerName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
                     b.Property<int>("Strength")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Will")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -91,18 +72,16 @@ namespace server.Migrations
                     b.ToTable("PlayerCharacters");
                 });
 
-            modelBuilder.Entity("server.Models.PlayerCharacter", b =>
+            modelBuilder.Entity("PlayerCharacter", b =>
                 {
-                    b.HasOne("server.Models.GameMaster", "GameMaster")
+                    b.HasOne("GameMaster", null)
                         .WithMany("PlayerCharacters")
                         .HasForeignKey("GameMasterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("GameMaster");
                 });
 
-            modelBuilder.Entity("server.Models.GameMaster", b =>
+            modelBuilder.Entity("GameMaster", b =>
                 {
                     b.Navigation("PlayerCharacters");
                 });
