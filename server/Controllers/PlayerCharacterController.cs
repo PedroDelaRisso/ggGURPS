@@ -16,22 +16,19 @@ public class PlayerCharacterController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<PlayerCharacterOutputAllDTO>>> Get()
+    public async Task<ActionResult<List<PlayerCharacterOutputGetAllDTO>>> Get()
     {
         var playerCharacters = await _context.PlayerCharacters.ToListAsync();
-        var playerCharactersDTO = new List<PlayerCharacterOutputAllDTO>();
-        foreach(PlayerCharacter pc in playerCharacters)
-        {
-            playerCharactersDTO.Add(new PlayerCharacterOutputAllDTO(pc.Id, pc.CharacterName, pc.GameMasterId));
-        }
+        var playerCharactersDTO = new List<PlayerCharacterOutputGetAllDTO>();
+        playerCharactersDTO.AddRange(playerCharacters.Select(pc => new PlayerCharacterOutputGetAllDTO(pc.Id, pc.CharacterName, pc.GameMasterId)).ToList());
         return Ok(playerCharactersDTO);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<PlayerCharacterOutputByIdDTO>> Get(long id)
+    public async Task<ActionResult<PlayerCharacterOutputGetByIdDTO>> Get(long id)
     {
         var playerCharacter = await _context.PlayerCharacters.FirstOrDefaultAsync(pc => pc.Id == id);
-        var playerCharacterDTO = new PlayerCharacterOutputByIdDTO(playerCharacter.Id,
+        var playerCharacterDTO = new PlayerCharacterOutputGetByIdDTO(playerCharacter.Id,
                                                                     playerCharacter.CharacterName,
                                                                     playerCharacter.Strength,
                                                                     playerCharacter.Dexterity,

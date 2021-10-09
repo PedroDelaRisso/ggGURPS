@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 [ApiController]
 [Route("[controller]")]
@@ -18,12 +19,9 @@ public class GameMasterController : ControllerBase
     public async Task<ActionResult<List<GameMasterOutputGetAllDTO>>> Get()
     {
         var gameMasters = await _context.GameMasters.ToListAsync();
-        var gameMastersOutputGetAllDTO = new List<GameMasterOutputGetAllDTO>();
-        foreach(GameMaster gm in gameMasters)
-        {
-            gameMastersOutputGetAllDTO.Add(new GameMasterOutputGetAllDTO(gm.Id, gm.Name));
-        }
-        return Ok(gameMastersOutputGetAllDTO);
+        var gameMastersOutputDTO = new List<GameMasterOutputGetAllDTO>();
+        gameMastersOutputDTO.AddRange(gameMasters.Select(gm => new GameMasterOutputGetAllDTO(gm.Id, gm.Name)).ToList());
+        return Ok(gameMastersOutputDTO);
     }
 
     [HttpGet("{id}")]
