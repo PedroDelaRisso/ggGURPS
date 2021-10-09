@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using server.DTOs;
 
 [ApiController]
 [Route("[controller]")]
@@ -15,39 +16,51 @@ public class GameMasterController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<GameMaster>> Get()
+    public async Task<ActionResult<List<GameMasterOutputAllDTO>>> Get()
     {
-        return await _context.GameMasters.ToListAsync();
+        var gameMasters = await _context.GameMasters.ToListAsync();
+        var gameMastersOutputAllDTO = new List<GameMasterOutputAllDTO>();
+        foreach(GameMaster gm in gameMasters)
+        {
+            gameMastersOutputAllDTO.Add(new GameMasterOutputAllDTO(gm.Id, gm.Name));
+        }
+        return Ok(gameMastersOutputAllDTO);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<GameMaster>> Get(long id)
+    public async Task<ActionResult<GameMasterOutputByIdDTO>> Get(long id)
     {
-        return Ok(await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == id));
+        var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == id);
+        var gameMasterDTO = new GameMasterOutputByIdDTO(gameMaster.Id, gameMaster.Name, gameMaster.PlayerCharacters);
+        return Ok(gameMasterDTO);
     }
 
     [HttpPost]
-    public async Task<ActionResult<GameMasterInputDTO>> Post([FromBody] GameMasterInputDTO gameMasterDTO)
+    public async Task<ActionResult<GameMasterOutputPostDTO>> Post([FromBody] GameMasterInputDTO gameMasterDTO)
     {
         var gameMaster = new GameMaster(gameMasterDTO.Name);
         _context.GameMasters.Add(gameMaster);
         await _context.SaveChangesAsync();
 
-        return Ok(gameMasterDTO);
+        var gameMasterOutputDTO = new GameMasterOutputPostDTO(gameMaster.Id, gameMaster.Name);
+
+        return Ok(gameMasterOutputDTO);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<GameMaster>> Put(long id, [FromBody] GameMaster gameMaster)
+    public async Task<ActionResult<GameMasterOutputPutDTO>> Put(long id, [FromBody] GameMasterInputDTO gameMasterDTO)
     {
+        var gameMaster = new GameMaster(gameMasterDTO.Name);
         gameMaster.Id = id;
         _context.GameMasters.Update(gameMaster);
         await _context.SaveChangesAsync();
 
-        return Ok(gameMaster); 
+        var gameMasterOutputDTO = new GameMasterOutputPutDTO(id, gameMasterDTO.Name);
+        return Ok(gameMasterOutputDTO);
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<GameMaster>> Delete(long id)
+    public async Task<ActionResult> Delete(long id)
     {
         _context.GameMasters.Remove(await _context.GameMasters.FirstOrDefaultAsync(gameMaster => gameMaster.Id == id));
         await _context.SaveChangesAsync();
