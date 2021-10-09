@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using server.Models;
 
 [ApiController]
 [Route("[controller]")]
@@ -28,12 +27,13 @@ public class GameMasterController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<GameMaster>> Post([FromBody] GameMaster gameMaster)
+    public async Task<ActionResult<GameMasterInputDTO>> Post([FromBody] GameMasterInputDTO gameMasterDTO)
     {
+        var gameMaster = new GameMaster(gameMasterDTO.Name);
         _context.GameMasters.Add(gameMaster);
         await _context.SaveChangesAsync();
 
-        return Ok(gameMaster);
+        return Ok(gameMasterDTO);
     }
 
     [HttpPut("{id}")]
