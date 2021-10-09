@@ -15,22 +15,22 @@ public class GameMasterController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<GameMasterOutputAllDTO>>> Get()
+    public async Task<ActionResult<List<GameMasterOutputGetAllDTO>>> Get()
     {
         var gameMasters = await _context.GameMasters.ToListAsync();
-        var gameMastersOutputAllDTO = new List<GameMasterOutputAllDTO>();
+        var gameMastersOutputGetAllDTO = new List<GameMasterOutputGetAllDTO>();
         foreach(GameMaster gm in gameMasters)
         {
-            gameMastersOutputAllDTO.Add(new GameMasterOutputAllDTO(gm.Id, gm.Name));
+            gameMastersOutputGetAllDTO.Add(new GameMasterOutputGetAllDTO(gm.Id, gm.Name));
         }
-        return Ok(gameMastersOutputAllDTO);
+        return Ok(gameMastersOutputGetAllDTO);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<GameMasterOutputByIdDTO>> Get(long id)
+    public async Task<ActionResult<GameMasterOutputGetByIdDTO>> Get(long id)
     {
         var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == id);
-        var gameMasterDTO = new GameMasterOutputByIdDTO(gameMaster.Id, gameMaster.Name, gameMaster.PlayerCharacters);
+        var gameMasterDTO = new GameMasterOutputGetByIdDTO(gameMaster.Id, gameMaster.Name, gameMaster.PlayerCharacters);
         return Ok(gameMasterDTO);
     }
 
