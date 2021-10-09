@@ -53,6 +53,11 @@ public class PlayerCharacterController : ControllerBase
                                                     playerCharacterDTO.FatiguePoints,
                                                     playerCharacterDTO.HitPoints,
                                                     playerCharacterDTO.GameMasterId);
+
+        var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == playerCharacter.GameMasterId);
+
+        if (gameMaster == null) return Conflict("ERROR 409! No Game Master found with the provided ID!");
+
         _context.PlayerCharacters.Add(playerCharacter);
         await _context.SaveChangesAsync();
 

@@ -27,9 +27,14 @@ public class GameMasterController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<GameMasterOutputGetByIdDTO>> Get(long id)
     {
+        var playerDTOList = new List<PlayerCharacterOutputGetByGameMasterIdDTO>();
+        var playerList = await _context.PlayerCharacters.Where(pc => pc.GameMasterId == id).ToListAsync();
+        playerDTOList.AddRange(playerList.Select(pc => new PlayerCharacterOutputGetByGameMasterIdDTO(pc.Id, pc.CharacterName)).ToList());
+
         var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == id);
-        var gameMasterDTO = new GameMasterOutputGetByIdDTO(gameMaster.Id, gameMaster.Name, gameMaster.PlayerCharacters);
-        return Ok(gameMasterDTO);
+        var gameMasterDTO = new GameMasterOutputGetByIdDTO(gameMaster.Id, gameMaster.Name, playerDTOList);
+
+        return Ok(playerDTOList);
     }
 
     [HttpPost]

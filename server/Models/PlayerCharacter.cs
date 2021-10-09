@@ -21,6 +21,12 @@ public class PlayerCharacter
         CharacterName = characterName;
     }
 
+    public PlayerCharacter(long id, string characterName)
+    {
+        Id = id;
+        CharacterName = characterName;
+    }
+
     public PlayerCharacter(long id, string characterName, long gameMasterId)
     {
         Id = id;
