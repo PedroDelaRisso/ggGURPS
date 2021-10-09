@@ -1,6 +1,7 @@
 This is the first draft of the README.md
 
 Welcome to ggGURPS. A web application (currently just a web API) to facilitate GURPS campaigns.
+The title is provisory.
 
 GURPS is an RPG system published by Steve Jackson Games. Its name means Generic Universal Role Playing System. It's a very complex and complete RPG system.
 
