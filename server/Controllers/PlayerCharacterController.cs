@@ -28,6 +28,10 @@ public class PlayerCharacterController : ControllerBase
     public async Task<ActionResult<PlayerCharacterOutputGetByIdDTO>> Get(long id)
     {
         var playerCharacter = await _context.PlayerCharacters.FirstOrDefaultAsync(pc => pc.Id == id);
+
+        if (playerCharacter == null)
+            return NotFound("No Player Character matches the provided ID.");
+
         var playerCharacterDTO = new PlayerCharacterOutputGetByIdDTO(playerCharacter.Id,
                                                                     playerCharacter.CharacterName,
                                                                     playerCharacter.Strength,
@@ -37,14 +41,15 @@ public class PlayerCharacterController : ControllerBase
                                                                     playerCharacter.FatiguePoints,
                                                                     playerCharacter.HitPoints,
                                                                     playerCharacter.GameMasterId);
-
+        var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == playerCharacterDTO.GameMasterId);
+        playerCharacterDTO.GameMasterName = gameMaster.Name;
         return Ok(playerCharacterDTO);
     }
 
     [HttpPost]
     public async Task<ActionResult<PlayerCharacterOutputPostDTO>> Post([FromBody] PlayerCharacterInputDTO playerCharacterDTO)
     {
-        var playerCharacter = new PlayerCharacter(playerCharacterDTO.Id,
+        var playerCharacter = new PlayerCharacter(0,
                                                     playerCharacterDTO.CharacterName,
                                                     playerCharacterDTO.Strength,
                                                     playerCharacterDTO.Dexterity,
@@ -69,16 +74,16 @@ public class PlayerCharacterController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<PlayerCharacterOutputPutDTO>> Put([FromBody] PlayerCharacterInputDTO playerCharacterDTO, long id)
     {
-        var playerCharacter = new PlayerCharacter(playerCharacterDTO.Id,
-                                                    playerCharacterDTO.CharacterName,
-                                                    playerCharacterDTO.Strength,
-                                                    playerCharacterDTO.Dexterity,
-                                                    playerCharacterDTO.Inteligence,
-                                                    playerCharacterDTO.Health,
-                                                    playerCharacterDTO.FatiguePoints,
-                                                    playerCharacterDTO.HitPoints,
-                                                    playerCharacterDTO.GameMasterId);
-        playerCharacter.Id = id;
+        var playerCharacter = new PlayerCharacter(id,
+                                                playerCharacterDTO.CharacterName,
+                                                playerCharacterDTO.Strength,
+                                                playerCharacterDTO.Dexterity,
+                                                playerCharacterDTO.Inteligence,
+                                                playerCharacterDTO.Health,
+                                                playerCharacterDTO.FatiguePoints,
+                                                playerCharacterDTO.HitPoints,
+                                                playerCharacterDTO.GameMasterId);
+
         _context.PlayerCharacters.Update(playerCharacter);
         await _context.SaveChangesAsync();
 
@@ -90,6 +95,10 @@ public class PlayerCharacterController : ControllerBase
     public async Task<ActionResult<PlayerCharacter>> Delete(long id)
     {
         var playerCharacter = await _context.PlayerCharacters.FirstOrDefaultAsync(pc => pc.Id == id);
+
+        if(playerCharacter == null)
+            return NotFound("No Player Character matches the provided ID.");
+
         var playerCharacterDTO = new PlayerCharacterOutputDeleteDTO(playerCharacter.Id, playerCharacter.CharacterName);
         _context.PlayerCharacters.Remove(playerCharacter);
         await _context.SaveChangesAsync();
