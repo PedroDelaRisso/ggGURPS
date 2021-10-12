@@ -24,7 +24,7 @@ This list will be updated regularly as new ideas arrive.
 
 How to develop (so far):
 - [.NET 5 SDK](https://dotnet.microsoft.com).
-- An SQL Server. I use the Basic installation of [SQL Express](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads).
+- An SQL Server. I use the Basic installation of [SQL Express](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads). If you want to use anything else, make sure to edit the connections strings in both ``appsettings.json`` and ``appsettings.Development.json``.
 - Any means of managing the database. I use [SSMS](https://docs.microsoft.com/pt-br/sql/ssms/download-sql-server-management-studio-ssms?redirectedfrom=MSDN&view=sql-server-ver15).
 - A code editor. I use [Visual Studio Code](https://code.visualstudio.com). Make sure to look for the C# extension and install it.
 - Any terminal to run the commands. I use the terminal inside Visual Studio Code.
