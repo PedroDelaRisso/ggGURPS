@@ -34,8 +34,9 @@ Navigate to the server folder inside the repository.
 ```bash
 cd server
 ```
-Then execute this command:
+Then execute these commands in this order:
 ```bash
+dotnet ef database update
 dotnet run
 ```
 Or add a watch in between the words so that whenever you save a .cs file, the web API page will reload automatically.
