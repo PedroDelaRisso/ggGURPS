@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 [ApiController]
 [Route("[controller]")]
@@ -15,22 +16,24 @@ public class GameMasterController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<GameMasterOutputAllDTO>>> Get()
+    public async Task<ActionResult<List<GameMasterOutputGetAllDTO>>> Get()
     {
         var gameMasters = await _context.GameMasters.ToListAsync();
-        var gameMastersOutputAllDTO = new List<GameMasterOutputAllDTO>();
-        foreach(GameMaster gm in gameMasters)
-        {
-            gameMastersOutputAllDTO.Add(new GameMasterOutputAllDTO(gm.Id, gm.Name));
-        }
-        return Ok(gameMastersOutputAllDTO);
+        var gameMastersOutputDTO = new List<GameMasterOutputGetAllDTO>();
+        gameMastersOutputDTO.AddRange(gameMasters.Select(gm => new GameMasterOutputGetAllDTO(gm.Id, gm.Name)).ToList());
+        return Ok(gameMastersOutputDTO);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<GameMasterOutputByIdDTO>> Get(long id)
+    public async Task<ActionResult<GameMasterOutputGetByIdDTO>> Get(long id)
     {
+        var playerDTOList = new List<PlayerCharacterOutputGetByGameMasterIdDTO>();
+        var playerList = await _context.PlayerCharacters.Where(pc => pc.GameMasterId == id).ToListAsync();
+        playerDTOList.AddRange(playerList.Select(pc => new PlayerCharacterOutputGetByGameMasterIdDTO(pc.Id, pc.CharacterName)).ToList());
+
         var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == id);
-        var gameMasterDTO = new GameMasterOutputByIdDTO(gameMaster.Id, gameMaster.Name, gameMaster.PlayerCharacters);
+        var gameMasterDTO = new GameMasterOutputGetByIdDTO(gameMaster.Id, gameMaster.Name, playerDTOList);
+
         return Ok(gameMasterDTO);
     }
 

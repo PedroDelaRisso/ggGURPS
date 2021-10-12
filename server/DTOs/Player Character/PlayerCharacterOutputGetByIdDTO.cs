@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class PlayerCharacterOutputByIdDTO
+public class PlayerCharacterOutputGetByIdDTO
 {
     public long Id { get; set; }
     public string CharacterName { get; set; }
@@ -12,7 +12,7 @@ public class PlayerCharacterOutputByIdDTO
     public int HitPoints { get; set; }
     public long GameMasterId { get; set; }
 
-    public PlayerCharacterOutputByIdDTO(long id,
+    public PlayerCharacterOutputGetByIdDTO(long id,
                                         string characterName,
                                         int strength,
                                         int dexterity,
