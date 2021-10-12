@@ -34,7 +34,7 @@ public class GameMasterController : ControllerBase
         var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == id);
         var gameMasterDTO = new GameMasterOutputGetByIdDTO(gameMaster.Id, gameMaster.Name, playerDTOList);
 
-        return Ok(playerDTOList);
+        return Ok(gameMasterDTO);
     }
 
     [HttpPost]

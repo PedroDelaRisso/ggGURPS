@@ -9,6 +9,6 @@ public class GameMasterOutputGetByIdDTO
     {
         Id = id;
         Name = name;
-        playerCharacters = PlayerCharacters;
+        PlayerCharacters = playerCharacters;
     }
 }
