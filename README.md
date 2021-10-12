@@ -21,3 +21,25 @@ Planned features:
     > Any Player and Game Master should be able to customize their own rolls for skills, attributes and damage dealt.
 
 This list will be updated regularly as new ideas arrive.
+
+How to develop (so far):
+- [.NET 5 SDK]("https://dotnet.microsoft.com").
+- An SQL Server. I use the Basic installation of [SQL Express]("https://www.microsoft.com/pt-br/sql-server/sql-server-downloads").
+- Any means of managing the database. I use [SSMS]("https://docs.microsoft.com/pt-br/sql/ssms/download-sql-server-management-studio-ssms?redirectedfrom=MSDN&view=sql-server-ver15").
+- A code editor. I use [Visual Studio Code]("https://code.visualstudio.com"). Make sure to look for the C# extension and install it.
+- Any terminal to run the commands. I use the terminal inside Visual Studio Code.
+
+How to run:
+Navigate to the server folder inside the repository.
+```bash
+cd server
+```
+Then execute this command:
+```bash
+dotnet run
+```
+Or add a watch in between the words so that whenever you save a .cs file, the web API page will reload automatically.
+```bash
+dotnet watch run
+```
+And you should be all set!
