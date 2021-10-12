@@ -20,6 +20,7 @@ public class PlayerCharacterInputDTO
                                     int hitPoints,
                                     long gameMasterId)
     {
+        Id = id;
         CharacterName = characterName;
         Strength = strength;
         Dexterity = dexterity;

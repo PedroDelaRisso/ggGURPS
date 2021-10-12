@@ -11,6 +11,7 @@ public class PlayerCharacterOutputGetByIdDTO
     public int FatiguePoints { get; set; }
     public int HitPoints { get; set; }
     public long GameMasterId { get; set; }
+    public string GameMasterName { get; set; }
 
     public PlayerCharacterOutputGetByIdDTO(long id,
                                         string characterName,
