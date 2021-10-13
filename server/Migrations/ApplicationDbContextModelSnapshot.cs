@@ -17,22 +17,7 @@ namespace server.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("GameMaster", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GameMasters");
-                });
-
-            modelBuilder.Entity("PlayerCharacter", b =>
+            modelBuilder.Entity("Character", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,13 +52,28 @@ namespace server.Migrations
 
                     b.HasIndex("GameMasterId");
 
-                    b.ToTable("PlayerCharacters");
+                    b.ToTable("Characters");
                 });
 
-            modelBuilder.Entity("PlayerCharacter", b =>
+            modelBuilder.Entity("GameMaster", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GameMasters");
+                });
+
+            modelBuilder.Entity("Character", b =>
                 {
                     b.HasOne("GameMaster", null)
-                        .WithMany("PlayerCharacters")
+                        .WithMany("Characters")
                         .HasForeignKey("GameMasterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -81,7 +81,7 @@ namespace server.Migrations
 
             modelBuilder.Entity("GameMaster", b =>
                 {
-                    b.Navigation("PlayerCharacters");
+                    b.Navigation("Characters");
                 });
 #pragma warning restore 612, 618
         }

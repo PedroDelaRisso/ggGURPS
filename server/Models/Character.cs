@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class PlayerCharacter
+public class Character
 {
     public long Id { get; set; }
 
@@ -16,25 +16,25 @@ public class PlayerCharacter
 
     public long GameMasterId { get; set; }
 
-    public PlayerCharacter(string characterName)
+    public Character(string characterName)
     {
         CharacterName = characterName;
     }
 
-    public PlayerCharacter(long id, string characterName)
+    public Character(long id, string characterName)
     {
         Id = id;
         CharacterName = characterName;
     }
 
-    public PlayerCharacter(long id, string characterName, long gameMasterId)
+    public Character(long id, string characterName, long gameMasterId)
     {
         Id = id;
         CharacterName = characterName;
         GameMasterId = gameMasterId;
     }
 
-    public PlayerCharacter(long id,
+    public Character(long id,
                             string characterName,
                             int strength,
                             int dexterity,

@@ -1,9 +1,9 @@
-public class PlayerCharacterOutputDeleteDTO
+public class CharacterOutputDeleteDTO
 {
     public long Id { get; set; }
     public string CharacterName { get; set; }
     
-    public PlayerCharacterOutputDeleteDTO(long id, string characterName)
+    public CharacterOutputDeleteDTO(long id, string characterName)
     {
         Id = id;
         CharacterName = characterName;

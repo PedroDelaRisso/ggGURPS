@@ -1,9 +1,9 @@
-public class PlayerCharacterOutputPostDTO
+public class CharacterOutputPostDTO
 {
     public long Id { get; set; }
     public string CharacterName { get; set; }
     
-    public PlayerCharacterOutputPostDTO(long id, string characterName)
+    public CharacterOutputPostDTO(long id, string characterName)
     {
         Id = id;
         CharacterName = characterName;
