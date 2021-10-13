@@ -36,10 +36,13 @@ cd server
 ```
 Then execute these commands in this order:
 ```bash
+dotnet tool install --global dotnet-ef
 dotnet ef database update
 dotnet run
 ```
-Or add a watch in between the words so that whenever you save a .cs file, the web API page will reload automatically.
+The first command installs Entity Framework. The second creates the database. The third runs the project.
+
+You can add a watch in between "dotnet" and "run" so that whenever you save a .cs file, the project will run again and the web API page will reload.
 ```bash
 dotnet watch run
 ```
