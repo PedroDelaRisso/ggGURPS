@@ -36,9 +36,9 @@ public class GameMasterController : ControllerBase
         if (gameMaster == null)
             return NotFound("No Game Master matches the provided ID.");
 
-        var playerDTOList = new List<PlayerCharacterOutputGetByGameMasterIdDTO>();
-        var playerList = await _context.PlayerCharacters.Where(pc => pc.GameMasterId == id).ToListAsync();
-        playerDTOList.AddRange(playerList.Select(pc => new PlayerCharacterOutputGetByGameMasterIdDTO(pc.Id, pc.CharacterName)).ToList());
+        var playerDTOList = new List<CharacterOutputGetByGameMasterIdDTO>();
+        var playerList = await _context.Characters.Where(pc => pc.GameMasterId == id).ToListAsync();
+        playerDTOList.AddRange(playerList.Select(pc => new CharacterOutputGetByGameMasterIdDTO(pc.Id, pc.CharacterName)).ToList());
 
         var gameMasterDTO = new GameMasterOutputGetByIdDTO(gameMaster.Id, gameMaster.Name, playerDTOList);
 
