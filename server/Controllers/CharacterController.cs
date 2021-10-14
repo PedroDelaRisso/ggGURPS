@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 [ApiController]
 [Route("[controller]")]
@@ -18,19 +19,28 @@ public class CharacterController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<CharacterOutputGetAllDTO>>> Get()
     {
-        var Characters = await _context.Characters.ToListAsync();
-        var CharactersDTO = new List<CharacterOutputGetAllDTO>();
-        CharactersDTO.AddRange(Characters.Select(pc => new CharacterOutputGetAllDTO(pc.Id, pc.CharacterName, pc.GameMasterId)).ToList());
-        return Ok(CharactersDTO);
+        try
+        {
+            var characters = await _context.Characters.ToListAsync();
+            var characterDTOList = new List<CharacterOutputGetAllDTO>();
+            characterDTOList.AddRange(characters.Select(chrctr => new CharacterOutputGetAllDTO(chrctr.Id, chrctr.CharacterName, chrctr.GameMasterId)).ToList());
+
+            if (!characters.Any()) return NotFound("There are no saved Characters.");
+
+            return characterDTOList;
+        } catch (Exception ex)
+        {
+            return Conflict(ex.Message);
+        }
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<CharacterOutputGetByIdDTO>> Get(long id)
     {
-        var Character = await _context.Characters.FirstOrDefaultAsync(pc => pc.Id == id);
+        var Character = await _context.Characters.FirstOrDefaultAsync(chrctr => chrctr.Id == id);
 
         if (Character == null)
-            return NotFound("No Player Character matches the provided ID.");
+            return NotFound("No Character matches the provided ID.");
 
         var CharacterDTO = new CharacterOutputGetByIdDTO(Character.Id,
                                                                     Character.CharacterName,
@@ -47,62 +57,85 @@ public class CharacterController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<CharacterOutputPostDTO>> Post([FromBody] CharacterInputDTO CharacterDTO)
+    public async Task<ActionResult<CharacterOutputPostDTO>> Post([FromBody] CharacterInputDTO characterDTO)
     {
-        var Character = new Character(0,
-                                                    CharacterDTO.CharacterName,
-                                                    CharacterDTO.Strength,
-                                                    CharacterDTO.Dexterity,
-                                                    CharacterDTO.Inteligence,
-                                                    CharacterDTO.Health,
-                                                    CharacterDTO.FatiguePoints,
-                                                    CharacterDTO.HitPoints,
-                                                    CharacterDTO.GameMasterId);
+        try
+        {
+            var character = new Character(0,
+                                            characterDTO.CharacterName,
+                                            characterDTO.Strength,
+                                            characterDTO.Dexterity,
+                                            characterDTO.Inteligence,
+                                            characterDTO.Health,
+                                            characterDTO.FatiguePoints,
+                                            characterDTO.HitPoints,
+                                            characterDTO.GameMasterId);
 
-        var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == Character.GameMasterId);
+            var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(gm => gm.Id == character.GameMasterId);
 
-        if (gameMaster == null) return Conflict("ERROR 409! No Game Master found with the provided ID!");
+            if (gameMaster == null) return Conflict("ERROR 409! No Game Master found with the provided ID!");
 
-        _context.Characters.Add(Character);
-        await _context.SaveChangesAsync();
+            _context.Characters.Add(character);
+            await _context.SaveChangesAsync();
 
-        var CharacterOutputDTO = new CharacterOutputPostDTO(Character.Id, Character.CharacterName);
+            var characterOutputDTO = new CharacterOutputPostDTO(character.Id, character.CharacterName);
 
-        return Ok(CharacterOutputDTO);
+            return Ok(characterOutputDTO);
+        } catch (Exception ex)
+        {
+            return Conflict(ex.Message);
+        }
+        
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<CharacterOutputPutDTO>> Put([FromBody] CharacterInputDTO CharacterDTO, long id)
+    public async Task<ActionResult<CharacterOutputPutDTO>> Put([FromBody] CharacterInputDTO characterDTO, long id)
     {
-        var Character = new Character(id,
-                                                CharacterDTO.CharacterName,
-                                                CharacterDTO.Strength,
-                                                CharacterDTO.Dexterity,
-                                                CharacterDTO.Inteligence,
-                                                CharacterDTO.Health,
-                                                CharacterDTO.FatiguePoints,
-                                                CharacterDTO.HitPoints,
-                                                CharacterDTO.GameMasterId);
+        try
+        {
+            var chrSrch = await _context.Characters.FirstOrDefaultAsync(chrctr => chrctr.Id == id);
+            if (chrSrch == null)
+                return NotFound("No Character matches the provided ID.");
+            var character = new Character(id,
+                                            characterDTO.CharacterName,
+                                            characterDTO.Strength,
+                                            characterDTO.Dexterity,
+                                            characterDTO.Inteligence,
+                                            characterDTO.Health,
+                                            characterDTO.FatiguePoints,
+                                            characterDTO.HitPoints,
+                                            characterDTO.GameMasterId);
 
-        _context.Characters.Update(Character);
-        await _context.SaveChangesAsync();
+            _context.Characters.Update(character);
+            await _context.SaveChangesAsync();
 
-        var CharacterOutputDTO = new CharacterOutputPutDTO(id, CharacterDTO.CharacterName, Character.GameMasterId);
-        return Ok(CharacterOutputDTO);
+            var characterOutputDTO = new CharacterOutputPutDTO(id, characterDTO.CharacterName, character.GameMasterId);
+            return Ok(characterOutputDTO);
+        } catch (Exception ex)
+        {
+            return Conflict(ex.Message);
+        }
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult<Character>> Delete(long id)
     {
-        var Character = await _context.Characters.FirstOrDefaultAsync(pc => pc.Id == id);
+        try
+        {
+            var character = await _context.Characters.FirstOrDefaultAsync(chrctr => chrctr.Id == id);
 
-        if(Character == null)
-            return NotFound("No Player Character matches the provided ID.");
+            if(character == null)
+                return NotFound("No Character matches the provided ID.");
 
-        var CharacterDTO = new CharacterOutputDeleteDTO(Character.Id, Character.CharacterName);
-        _context.Characters.Remove(Character);
-        await _context.SaveChangesAsync();
+            var characterDTO = new CharacterOutputDeleteDTO(character.Id, character.CharacterName);
+            _context.Characters.Remove(character);
+            await _context.SaveChangesAsync();
 
-        return Ok();
+            return Ok("Character deleted successfully.");
+
+        } catch (Exception ex)
+        {
+            return Conflict(ex.Message);
+        }
     }
 }
