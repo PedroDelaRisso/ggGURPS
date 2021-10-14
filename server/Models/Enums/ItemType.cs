@@ -3,7 +3,7 @@ using System.ComponentModel;
 public enum ItemType
 {
     [Description("Item")]
-    Item,
+    Item = 1,
     [Description("Armor")]
     Armor,
     [Description("Gun")]
