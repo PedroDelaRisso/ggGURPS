@@ -12,106 +12,12 @@ namespace server.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
-#pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("GameMaster", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GameMasters");
-                });
-
-            modelBuilder.Entity("Inventory", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<long>("CharacterId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ItemId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Inventories");
-                });
-
-            modelBuilder.Entity("Item", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long?>("DamageDice")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("DamageModifier")
-                        .HasColumnType("int");
-
-                    b.Property<long?>("DamageReduction")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ItemType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<long?>("Range")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("RateOfFire")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("Recoil")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("SwingDamageDice")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("SwingDamageModifier")
-                        .HasColumnType("int");
-
-                    b.Property<long?>("ThrustDamageDice")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("ThrustDamageModifier")
-                        .HasColumnType("int");
-
-                    b.Property<double?>("Weight")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("PlayerCharacter", b =>
+            modelBuilder.Entity("Character", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -146,13 +52,28 @@ namespace server.Migrations
 
                     b.HasIndex("GameMasterId");
 
-                    b.ToTable("PlayerCharacters");
+                    b.ToTable("Characters");
                 });
 
-            modelBuilder.Entity("PlayerCharacter", b =>
+            modelBuilder.Entity("GameMaster", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GameMasters");
+                });
+
+            modelBuilder.Entity("Character", b =>
                 {
                     b.HasOne("GameMaster", null)
-                        .WithMany("PlayerCharacters")
+                        .WithMany("Characters")
                         .HasForeignKey("GameMasterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -160,9 +81,8 @@ namespace server.Migrations
 
             modelBuilder.Entity("GameMaster", b =>
                 {
-                    b.Navigation("PlayerCharacters");
+                    b.Navigation("Characters");
                 });
-#pragma warning restore 612, 618
         }
     }
 }

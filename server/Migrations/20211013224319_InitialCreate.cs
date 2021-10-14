@@ -20,7 +20,7 @@ namespace server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlayerCharacters",
+                name: "Characters",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -36,9 +36,9 @@ namespace server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlayerCharacters", x => x.Id);
+                    table.PrimaryKey("PK_Characters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PlayerCharacters_GameMasters_GameMasterId",
+                        name: "FK_Characters_GameMasters_GameMasterId",
                         column: x => x.GameMasterId,
                         principalTable: "GameMasters",
                         principalColumn: "Id",
@@ -46,15 +46,15 @@ namespace server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerCharacters_GameMasterId",
-                table: "PlayerCharacters",
+                name: "IX_Characters_GameMasterId",
+                table: "Characters",
                 column: "GameMasterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PlayerCharacters");
+                name: "Characters");
 
             migrationBuilder.DropTable(
                 name: "GameMasters");
