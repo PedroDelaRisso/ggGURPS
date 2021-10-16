@@ -6,6 +6,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<GameMaster> GameMasters { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<Item> Items { get; set; }
+    public DbSet<Roll> Rolls { get; set; }
 
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
