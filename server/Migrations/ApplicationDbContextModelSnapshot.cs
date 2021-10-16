@@ -156,7 +156,10 @@ namespace server.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("CharacterId")
+                    b.Property<long?>("CharacterId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("GameMasterId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Modififer")

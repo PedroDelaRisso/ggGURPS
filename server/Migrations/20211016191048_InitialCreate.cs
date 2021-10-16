@@ -67,7 +67,8 @@ namespace server.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CharacterId = table.Column<long>(type: "bigint", nullable: false),
+                    GameMasterId = table.Column<long>(type: "bigint", nullable: true),
+                    CharacterId = table.Column<long>(type: "bigint", nullable: true),
                     RollTypeId = table.Column<long>(type: "bigint", nullable: true),
                     RollIndex = table.Column<long>(type: "bigint", nullable: false),
                     RollType = table.Column<int>(type: "int", nullable: false),
