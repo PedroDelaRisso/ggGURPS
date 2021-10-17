@@ -32,7 +32,7 @@ public class RollController : ControllerBase
 
             for (int i = 0; i < roll.NumberOfDice; i++)
                 roll.Result += rand.Next(1, 7);
-            roll.Result += roll.Modififer;
+            roll.Result += roll.Modifier;
         }
         else 
         {
@@ -43,7 +43,7 @@ public class RollController : ControllerBase
 
             for (int i = 0; i < 3; i++)
                 roll.Result += rand.Next(1, 7);
-            roll.Result += roll.Modififer;
+            roll.Result += roll.Modifier;
         }
         if (characterId > 0 && gameMasterId > 0)
         {

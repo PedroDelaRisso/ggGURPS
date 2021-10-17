@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211016191048_InitialCreate")]
+    [Migration("20211017135315_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,6 +19,27 @@ namespace server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Advantage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AffectedAttribute")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Advantages");
+                });
 
             modelBuilder.Entity("Character", b =>
                 {
@@ -56,6 +77,30 @@ namespace server.Migrations
                     b.HasIndex("GameMasterId");
 
                     b.ToTable("Characters");
+                });
+
+            modelBuilder.Entity("Disadvantage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AffectedAttribute")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ControlRating")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Disadvantages");
                 });
 
             modelBuilder.Entity("GameMaster", b =>
@@ -164,7 +209,7 @@ namespace server.Migrations
                     b.Property<long?>("GameMasterId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Modififer")
+                    b.Property<int>("Modifier")
                         .HasColumnType("int");
 
                     b.Property<int>("NumberOfDice")
@@ -184,7 +229,38 @@ namespace server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CharacterId");
+
+                    b.HasIndex("GameMasterId");
+
                     b.ToTable("Rolls");
+                });
+
+            modelBuilder.Entity("Skill", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BaseAttribute")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CharacterId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("PointsSpent")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillDifficulty")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillLevel")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("Character", b =>
@@ -196,9 +272,27 @@ namespace server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Roll", b =>
+                {
+                    b.HasOne("Character", null)
+                        .WithMany("Rolls")
+                        .HasForeignKey("CharacterId");
+
+                    b.HasOne("GameMaster", null)
+                        .WithMany("Rolls")
+                        .HasForeignKey("GameMasterId");
+                });
+
+            modelBuilder.Entity("Character", b =>
+                {
+                    b.Navigation("Rolls");
+                });
+
             modelBuilder.Entity("GameMaster", b =>
                 {
                     b.Navigation("Characters");
+
+                    b.Navigation("Rolls");
                 });
 #pragma warning restore 612, 618
         }

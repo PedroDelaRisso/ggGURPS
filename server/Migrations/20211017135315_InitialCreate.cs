@@ -7,6 +7,37 @@ namespace server.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Advantages",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AffectedAttribute = table.Column<int>(type: "int", nullable: true),
+                    Level = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Advantages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Disadvantages",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AffectedAttribute = table.Column<int>(type: "int", nullable: true),
+                    ControlRating = table.Column<int>(type: "int", nullable: true),
+                    Level = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Disadvantages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GameMasters",
                 columns: table => new
                 {
@@ -62,23 +93,20 @@ namespace server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rolls",
+                name: "Skills",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GameMasterId = table.Column<long>(type: "bigint", nullable: true),
-                    CharacterId = table.Column<long>(type: "bigint", nullable: true),
-                    RollTypeId = table.Column<long>(type: "bigint", nullable: true),
-                    RollIndex = table.Column<long>(type: "bigint", nullable: false),
-                    RollType = table.Column<int>(type: "int", nullable: false),
-                    NumberOfDice = table.Column<int>(type: "int", nullable: false),
-                    Modififer = table.Column<int>(type: "int", nullable: false),
-                    Result = table.Column<int>(type: "int", nullable: false)
+                    CharacterId = table.Column<long>(type: "bigint", nullable: false),
+                    BaseAttribute = table.Column<int>(type: "int", nullable: false),
+                    SkillDifficulty = table.Column<int>(type: "int", nullable: false),
+                    PointsSpent = table.Column<int>(type: "int", nullable: false),
+                    SkillLevel = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rolls", x => x.Id);
+                    table.PrimaryKey("PK_Skills", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,16 +135,61 @@ namespace server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Rolls",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CharacterId = table.Column<long>(type: "bigint", nullable: true),
+                    GameMasterId = table.Column<long>(type: "bigint", nullable: true),
+                    Result = table.Column<int>(type: "int", nullable: false),
+                    RollType = table.Column<int>(type: "int", nullable: false),
+                    RollTypeId = table.Column<long>(type: "bigint", nullable: true),
+                    NumberOfDice = table.Column<int>(type: "int", nullable: false),
+                    Modifier = table.Column<int>(type: "int", nullable: false),
+                    RollIndex = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rolls", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rolls_Characters_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Characters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Rolls_GameMasters_GameMasterId",
+                        column: x => x.GameMasterId,
+                        principalTable: "GameMasters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Characters_GameMasterId",
                 table: "Characters",
+                column: "GameMasterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rolls_CharacterId",
+                table: "Rolls",
+                column: "CharacterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rolls_GameMasterId",
+                table: "Rolls",
                 column: "GameMasterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Characters");
+                name: "Advantages");
+
+            migrationBuilder.DropTable(
+                name: "Disadvantages");
 
             migrationBuilder.DropTable(
                 name: "Inventories");
@@ -126,6 +199,12 @@ namespace server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Rolls");
+
+            migrationBuilder.DropTable(
+                name: "Skills");
+
+            migrationBuilder.DropTable(
+                name: "Characters");
 
             migrationBuilder.DropTable(
                 name: "GameMasters");

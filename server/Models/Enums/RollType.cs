@@ -9,5 +9,7 @@ public enum RollType
     [Description("Skill")]
     Skill,
     [Description("Damage")]
-    Damage
+    Damage,
+    [Description("Shots")]
+    Shots,
 }

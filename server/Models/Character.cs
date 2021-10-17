@@ -16,6 +16,8 @@ public class Character
 
     public long GameMasterId { get; set; }
 
+    public ICollection<Roll> Rolls { get; set; }
+
     public Character(string characterName)
     {
         CharacterName = characterName;

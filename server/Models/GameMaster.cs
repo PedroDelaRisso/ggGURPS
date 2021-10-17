@@ -7,6 +7,7 @@ public class GameMaster
     public string Name { get; set; }
 
     public ICollection<Character> Characters { get; set; }
+    public ICollection<Roll> Rolls { get; set; }
 
     public GameMaster(string name)
     {
