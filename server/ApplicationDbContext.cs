@@ -8,38 +8,41 @@ using ggGURPS.Models.Players;
 using ggGURPS.Models.Rolls;
 using ggGURPS.Models.Skills;
 
-public class ApplicationDbContext : DbContext
+namespace ggGURPS.Data
 {
-    public DbSet<GameMaster> GameMasters { get; set; }
-    public DbSet<Player> Players { get; set; }
-    public DbSet<Character> Characters { get; set; }
-    public DbSet<Advantage> Advantages { get; set; }
-    public DbSet<Skill> Skills { get; set; }
-    public DbSet<Item> Items { get; set; }
-    public DbSet<Campaign> Campaigns { get; set; }
-    public DbSet<Roll> Rolls { get; set; }
-
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public class ApplicationDbContext : DbContext
     {
-        modelBuilder.Entity<Character>()
-            .HasMany(left => left.Advantages)
-            .WithMany(right => right.Characters)
-            .UsingEntity(join => join.ToTable("TableRelations_CharactersToAdvantages"));
+        public DbSet<GameMaster> GameMasters { get; set; }
+        public DbSet<Player> Players { get; set; }
+        public DbSet<Character> Characters { get; set; }
+        public DbSet<Advantage> Advantages { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Campaign> Campaigns { get; set; }
+        public DbSet<Roll> Rolls { get; set; }
 
-        modelBuilder.Entity<Character>()
-            .HasMany(left => left.Skills)
-            .WithMany(right => right.Characters)
-            .UsingEntity(join => join.ToTable("TableRelations_CharactersToSkills"));
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Character>()
+                .HasMany(left => left.Advantages)
+                .WithMany(right => right.Characters)
+                .UsingEntity(join => join.ToTable("TableRelations_CharactersToAdvantages"));
 
-        modelBuilder.Entity<Character>()
-            .HasMany(left => left.Items)
-            .WithMany(right => right.Characters)
-            .UsingEntity(join => join.ToTable("TableRelations_CharactersToItems"));
+            modelBuilder.Entity<Character>()
+                .HasMany(left => left.Skills)
+                .WithMany(right => right.Characters)
+                .UsingEntity(join => join.ToTable("TableRelations_CharactersToSkills"));
 
-        modelBuilder.Entity<Player>()
-            .HasMany(left => left.Campaigns)
-            .WithMany(right => right.Players)
-            .UsingEntity(join => join.ToTable("TableRelations_PlayersToCampaigns"));
+            modelBuilder.Entity<Character>()
+                .HasMany(left => left.Items)
+                .WithMany(right => right.Characters)
+                .UsingEntity(join => join.ToTable("TableRelations_CharactersToItems"));
+
+            modelBuilder.Entity<Player>()
+                .HasMany(left => left.Campaigns)
+                .WithMany(right => right.Players)
+                .UsingEntity(join => join.ToTable("TableRelations_PlayersToCampaigns"));
+        }
     }
 }
