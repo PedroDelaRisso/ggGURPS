@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using ggGURPS.Services.GameMasters;
+using ggGURPS.Models.GameMasters;
 using ggGURPS.DTOs.GameMasters;
 using System.Threading.Tasks;
 using System;
