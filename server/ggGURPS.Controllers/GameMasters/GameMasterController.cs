@@ -19,36 +19,21 @@ namespace ggGURPS.Controllers.GameMasters
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(long id)
         {
-            try
-            {
-                var gameMaster = await _gameMasterService.GetById(id);
-                if (gameMaster == null)
-                    return NotFound("No Game Master matches the provided ID");
-                var getGameMasterByIdDTO = new GetGameMasterByIdDTO(
-                    gameMaster.Id,
-                    gameMaster.Name
-                );
+            var gameMaster = await _gameMasterService.GetById(id);
 
-                return Ok(getGameMasterByIdDTO);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            var getGameMasterByIdDTO = new GetGameMasterByIdDTO(
+                gameMaster.Id,
+                gameMaster.Name
+            );
+
+            return Ok(getGameMasterByIdDTO);
         }
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PostGameMasterDTO gameMasterDTO)
         {
-            try
-            {
-                await _gameMasterService.Create(gameMasterDTO);
+            await _gameMasterService.Create(gameMasterDTO);
 
-                return Ok("Game Master saved successfully.");
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            return Ok("Game Master saved successfully.");
         }
     }
 }
