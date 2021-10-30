@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ggGURPS.Services.GameMasters;
 using ggGURPS.DTOs.GameMasters;
 using System.Threading.Tasks;
-using System;
+using System.Collections.Generic;
 
 namespace ggGURPS.Controllers.GameMasters
 {
@@ -14,6 +14,12 @@ namespace ggGURPS.Controllers.GameMasters
         public GameMasterController(IGameMasterService gameMasterService)
         {
             _gameMasterService = gameMasterService;
+        }
+
+        [HttpGet]
+        public async Task<ICollection<GetAllGameMastersDTO>> GetAll()
+        {
+            return await _gameMasterService.GetAll();
         }
 
         [HttpGet("{id}")]
