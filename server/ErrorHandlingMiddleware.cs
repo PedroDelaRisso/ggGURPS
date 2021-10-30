@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace ggGURPS
         private static Task HandleExceptionAsync(HttpContext context, Exception ex) {
             var code = HttpStatusCode.InternalServerError;
 
-            if (ex is ArgumentNullException)
+            if (ex is KeyNotFoundException)
             {
                 code = HttpStatusCode.NotFound;
             }
