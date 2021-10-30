@@ -10,8 +10,8 @@ using ggGURPS.Data;
 namespace ggGURPS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211023145027_Initial")]
-    partial class Initial
+    [Migration("20211030131739_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

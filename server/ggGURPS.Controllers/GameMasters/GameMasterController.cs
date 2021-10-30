@@ -6,6 +6,8 @@ using System;
 
 namespace ggGURPS.Controllers.GameMasters
 {
+    [ApiController]
+    [Route("[controller]")]
     public class GameMasterController : ControllerBase
     {
         private readonly IGameMasterService _gameMasterService;
@@ -34,6 +36,19 @@ namespace ggGURPS.Controllers.GameMasters
                 throw new Exception(e.Message);
             }
         }
-    }
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] PostGameMasterDTO gameMasterDTO)
+        {
+            try
+            {
+                await _gameMasterService.Create(gameMasterDTO);
 
+                return Ok("Game Master saved successfully.");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+    }
 }
