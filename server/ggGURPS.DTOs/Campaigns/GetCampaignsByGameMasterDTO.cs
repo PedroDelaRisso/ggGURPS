@@ -1,9 +1,9 @@
-public class GetCharactersDTO
+public class GetCampaignsByGameMasterDTO
 {
     public long Id { get; set; }
     public string Name { get; set; }
 
-    public GetCharactersDTO(long id, string name)
+    public GetCampaignsByGameMasterDTO(long id, string name)
     {
         Id = id;
         Name = name;

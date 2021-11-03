@@ -1,9 +1,9 @@
-public class GetCharactersDTO
+public class GetGameMastersDTO
 {
     public long Id { get; set; }
     public string Name { get; set; }
 
-    public GetCharactersDTO(long id, string name)
+    public GetGameMastersDTO(long id, string name)
     {
         Id = id;
         Name = name;

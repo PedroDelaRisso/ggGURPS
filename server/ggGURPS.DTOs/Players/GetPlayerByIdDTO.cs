@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 
-public class GetCampaignByIdDTO
+public class GetPlayerByIdDTO
 {
     public long Id { get; set; }
     public string Name { get; set; }
-    public long GameMasterId { get; set; }
-    public GetGameMasterByCampaignDTO GameMaster { get; set; }
+    public ICollection<GetCampaignsDTO> Campaigns { get; set; }
     public ICollection<GetCharactersDTO> Characters { get; set; }
-    public GetCampaignByIdDTO(long id, string name)
+
+    public GetPlayerByIdDTO(long id, string name)
     {
         Id = id;
         Name = name;
+        Campaigns = new List<GetCampaignsDTO>();
         Characters = new List<GetCharactersDTO>();
     }
 }

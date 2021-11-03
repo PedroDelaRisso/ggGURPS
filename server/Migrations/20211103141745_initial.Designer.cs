@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ggGURPS.Data;
 
 namespace ggGURPS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211030131739_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211103141745_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,67 +20,7 @@ namespace ggGURPS.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AdvantageCharacter", b =>
-                {
-                    b.Property<long>("AdvantagesId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("CharactersId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("AdvantagesId", "CharactersId");
-
-                    b.HasIndex("CharactersId");
-
-                    b.ToTable("TableRelations_CharactersToAdvantages");
-                });
-
-            modelBuilder.Entity("CampaignPlayer", b =>
-                {
-                    b.Property<long>("CampaignsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PlayersId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("CampaignsId", "PlayersId");
-
-                    b.HasIndex("PlayersId");
-
-                    b.ToTable("TableRelations_PlayersToCampaigns");
-                });
-
-            modelBuilder.Entity("CharacterItem", b =>
-                {
-                    b.Property<long>("CharactersId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ItemsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("CharactersId", "ItemsId");
-
-                    b.HasIndex("ItemsId");
-
-                    b.ToTable("TableRelations_CharactersToItems");
-                });
-
-            modelBuilder.Entity("CharacterSkill", b =>
-                {
-                    b.Property<long>("CharactersId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SkillsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("CharactersId", "SkillsId");
-
-                    b.HasIndex("SkillsId");
-
-                    b.ToTable("TableRelations_CharactersToSkills");
-                });
-
-            modelBuilder.Entity("ggGURPS.Models.Advantages.Advantage", b =>
+            modelBuilder.Entity("Advantage", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,7 +44,22 @@ namespace ggGURPS.Migrations
                     b.ToTable("Advantages");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Campaigns.Campaign", b =>
+            modelBuilder.Entity("AdvantageCharacter", b =>
+                {
+                    b.Property<long>("AdvantagesId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CharactersId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("AdvantagesId", "CharactersId");
+
+                    b.HasIndex("CharactersId");
+
+                    b.ToTable("TableRelations_CharactersToAdvantages");
+                });
+
+            modelBuilder.Entity("Campaign", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -125,7 +79,22 @@ namespace ggGURPS.Migrations
                     b.ToTable("Campaigns");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Characters.Character", b =>
+            modelBuilder.Entity("CampaignPlayer", b =>
+                {
+                    b.Property<long>("CampaignsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PlayersId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CampaignsId", "PlayersId");
+
+                    b.HasIndex("PlayersId");
+
+                    b.ToTable("TableRelations_PlayersToCampaigns");
+                });
+
+            modelBuilder.Entity("Character", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -195,7 +164,37 @@ namespace ggGURPS.Migrations
                     b.ToTable("Characters");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.GameMasters.GameMaster", b =>
+            modelBuilder.Entity("CharacterItem", b =>
+                {
+                    b.Property<long>("CharactersId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ItemsId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CharactersId", "ItemsId");
+
+                    b.HasIndex("ItemsId");
+
+                    b.ToTable("TableRelations_CharactersToItems");
+                });
+
+            modelBuilder.Entity("CharacterSkill", b =>
+                {
+                    b.Property<long>("CharactersId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SkillsId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CharactersId", "SkillsId");
+
+                    b.HasIndex("SkillsId");
+
+                    b.ToTable("TableRelations_CharactersToSkills");
+                });
+
+            modelBuilder.Entity("GameMaster", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -210,7 +209,7 @@ namespace ggGURPS.Migrations
                     b.ToTable("GameMasters");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Items.Item", b =>
+            modelBuilder.Entity("Item", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -267,7 +266,7 @@ namespace ggGURPS.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Players.Player", b =>
+            modelBuilder.Entity("Player", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -282,7 +281,7 @@ namespace ggGURPS.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Rolls.Roll", b =>
+            modelBuilder.Entity("Roll", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -337,7 +336,7 @@ namespace ggGURPS.Migrations
                     b.ToTable("Rolls");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Skills.Skill", b =>
+            modelBuilder.Entity("Skill", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -369,67 +368,22 @@ namespace ggGURPS.Migrations
 
             modelBuilder.Entity("AdvantageCharacter", b =>
                 {
-                    b.HasOne("ggGURPS.Models.Advantages.Advantage", null)
+                    b.HasOne("Advantage", null)
                         .WithMany()
                         .HasForeignKey("AdvantagesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ggGURPS.Models.Characters.Character", null)
+                    b.HasOne("Character", null)
                         .WithMany()
                         .HasForeignKey("CharactersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CampaignPlayer", b =>
+            modelBuilder.Entity("Campaign", b =>
                 {
-                    b.HasOne("ggGURPS.Models.Campaigns.Campaign", null)
-                        .WithMany()
-                        .HasForeignKey("CampaignsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ggGURPS.Models.Players.Player", null)
-                        .WithMany()
-                        .HasForeignKey("PlayersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CharacterItem", b =>
-                {
-                    b.HasOne("ggGURPS.Models.Characters.Character", null)
-                        .WithMany()
-                        .HasForeignKey("CharactersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ggGURPS.Models.Items.Item", null)
-                        .WithMany()
-                        .HasForeignKey("ItemsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CharacterSkill", b =>
-                {
-                    b.HasOne("ggGURPS.Models.Characters.Character", null)
-                        .WithMany()
-                        .HasForeignKey("CharactersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ggGURPS.Models.Skills.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ggGURPS.Models.Campaigns.Campaign", b =>
-                {
-                    b.HasOne("ggGURPS.Models.GameMasters.GameMaster", "GameMaster")
+                    b.HasOne("GameMaster", "GameMaster")
                         .WithMany("Campaigns")
                         .HasForeignKey("GameMasterId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -438,15 +392,30 @@ namespace ggGURPS.Migrations
                     b.Navigation("GameMaster");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Characters.Character", b =>
+            modelBuilder.Entity("CampaignPlayer", b =>
                 {
-                    b.HasOne("ggGURPS.Models.Campaigns.Campaign", "Campaign")
+                    b.HasOne("Campaign", null)
+                        .WithMany()
+                        .HasForeignKey("CampaignsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Player", null)
+                        .WithMany()
+                        .HasForeignKey("PlayersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Character", b =>
+                {
+                    b.HasOne("Campaign", "Campaign")
                         .WithMany("Characters")
                         .HasForeignKey("CampaignId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ggGURPS.Models.Players.Player", "Player")
+                    b.HasOne("Player", "Player")
                         .WithMany("Characters")
                         .HasForeignKey("PlayerId");
 
@@ -455,25 +424,55 @@ namespace ggGURPS.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Rolls.Roll", b =>
+            modelBuilder.Entity("CharacterItem", b =>
                 {
-                    b.HasOne("ggGURPS.Models.Advantages.Advantage", "Advantage")
+                    b.HasOne("Character", null)
+                        .WithMany()
+                        .HasForeignKey("CharactersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Item", null)
+                        .WithMany()
+                        .HasForeignKey("ItemsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CharacterSkill", b =>
+                {
+                    b.HasOne("Character", null)
+                        .WithMany()
+                        .HasForeignKey("CharactersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Skill", null)
+                        .WithMany()
+                        .HasForeignKey("SkillsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Roll", b =>
+                {
+                    b.HasOne("Advantage", "Advantage")
                         .WithMany("Rolls")
                         .HasForeignKey("AdvantageId");
 
-                    b.HasOne("ggGURPS.Models.Characters.Character", "Character")
+                    b.HasOne("Character", "Character")
                         .WithMany("Rolls")
                         .HasForeignKey("CharacterId");
 
-                    b.HasOne("ggGURPS.Models.GameMasters.GameMaster", "GameMaster")
+                    b.HasOne("GameMaster", "GameMaster")
                         .WithMany("Rolls")
                         .HasForeignKey("GameMasterId");
 
-                    b.HasOne("ggGURPS.Models.Items.Item", "Item")
+                    b.HasOne("Item", "Item")
                         .WithMany("Rolls")
                         .HasForeignKey("ItemId");
 
-                    b.HasOne("ggGURPS.Models.Skills.Skill", "Skill")
+                    b.HasOne("Skill", "Skill")
                         .WithMany("Rolls")
                         .HasForeignKey("SkillId");
 
@@ -488,39 +487,39 @@ namespace ggGURPS.Migrations
                     b.Navigation("Skill");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Advantages.Advantage", b =>
+            modelBuilder.Entity("Advantage", b =>
                 {
                     b.Navigation("Rolls");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Campaigns.Campaign", b =>
+            modelBuilder.Entity("Campaign", b =>
                 {
                     b.Navigation("Characters");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Characters.Character", b =>
+            modelBuilder.Entity("Character", b =>
                 {
                     b.Navigation("Rolls");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.GameMasters.GameMaster", b =>
+            modelBuilder.Entity("GameMaster", b =>
                 {
                     b.Navigation("Campaigns");
 
                     b.Navigation("Rolls");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Items.Item", b =>
+            modelBuilder.Entity("Item", b =>
                 {
                     b.Navigation("Rolls");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Players.Player", b =>
+            modelBuilder.Entity("Player", b =>
                 {
                     b.Navigation("Characters");
                 });
 
-            modelBuilder.Entity("ggGURPS.Models.Skills.Skill", b =>
+            modelBuilder.Entity("Skill", b =>
                 {
                     b.Navigation("Rolls");
                 });

@@ -5,40 +5,37 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace ggGURPS
+public class ErrorHandlingMiddleware
 {
-    public class ErrorHandlingMiddleware
+    private readonly RequestDelegate Next;
+
+    public ErrorHandlingMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate Next;
+        this.Next = next;
+    }
 
-        public ErrorHandlingMiddleware(RequestDelegate next)
+    public async Task Invoke(HttpContext context)
+    {
+        try
         {
-            this.Next = next;
+            await Next(context);
         }
-
-        public async Task Invoke(HttpContext context)
+        catch (Exception ex)
         {
-            try
-            {
-                await Next(context);
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(context, ex);
-            }
+            await HandleExceptionAsync(context, ex);
         }
+    }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception ex) {
-            var code = HttpStatusCode.InternalServerError;
+    private static Task HandleExceptionAsync(HttpContext context, Exception ex) {
+        var code = HttpStatusCode.InternalServerError;
 
-            if (ex is KeyNotFoundException)
-            {
-                code = HttpStatusCode.NotFound;
-            }
-            
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)code;
-            return context.Response.WriteAsync(JsonSerializer.Serialize(new { Exception = "Error " + (int)code + ": " + ex.Message }));
+        if (ex is KeyNotFoundException)
+        {
+            code = HttpStatusCode.NotFound;
         }
+        
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)code;
+        return context.Response.WriteAsync(JsonSerializer.Serialize(new { Exception = "Error " + (int)code + ": " + ex.Message }));
     }
 }
