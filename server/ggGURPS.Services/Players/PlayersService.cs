@@ -43,7 +43,9 @@ public class PlayersService : IPlayersService
             throw new KeyNotFoundException();
 
         var playerDTO = new GetPlayerByIdDTO(player.Id, player.Name);
-        foreach(Character c in player.Characters)
+
+        var characters = await _context.Characters.Where(c => c.PlayerId == id).ToListAsync();
+        foreach(Character c in characters)
         {
             playerDTO.Characters.Add(new GetCharactersDTO(c.Id, c.Name));
         }
@@ -51,11 +53,12 @@ public class PlayersService : IPlayersService
         return playerDTO;
     }
 
-    public async Task Update(PutPlayerDTO playerDTO)
+    public async Task Update(long id, PutPlayerDTO playerDTO)
     {
-        var player = await _context.Players.FirstOrDefaultAsync(p => p.Id == playerDTO.Id);
+        var player = await _context.Players.FirstOrDefaultAsync(p => p.Id == id);
         if(player == null)
             throw new KeyNotFoundException();
+        playerDTO.Id = id;
 
         player.Name = playerDTO.Name;
         _context.Players.Update(player);

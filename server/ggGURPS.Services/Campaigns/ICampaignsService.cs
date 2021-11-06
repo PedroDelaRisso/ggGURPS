@@ -7,4 +7,5 @@ public interface ICampaignsService
     Task<List<GetCampaignsDTO>> GetAll();
     Task Update(long id, PutCampaignDTO campaignDTO);
     Task<GetCampaignByIdDTO> GetById(long id);
+    Task Delete(long id);
 }

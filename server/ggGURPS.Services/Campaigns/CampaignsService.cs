@@ -79,7 +79,18 @@ public class CampaignsService : ICampaignsService
                 charactersDTO.Add(new GetCharactersDTO(c.Id, c.Name));
         }
 
+        campaignDTO.Characters = charactersDTO;
+
         return campaignDTO;
+    }
+
+    public async Task Delete(long id)
+    {
+        var campaign = await _context.Campaigns.FirstOrDefaultAsync(c => c.Id == id);
+        if(campaign == null)
+            throw new KeyNotFoundException();
+        _context.Campaigns.Remove(campaign);
+        await this.Save();
     }
 
     private async Task Save()

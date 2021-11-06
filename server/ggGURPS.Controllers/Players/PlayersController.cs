@@ -35,8 +35,7 @@ public class PlayersController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(long id, [FromBody] PutPlayerDTO playerDTO)
     {
-        playerDTO.Id = id;
-        await _service.Update(playerDTO);
+        await _service.Update(id, playerDTO);
 
         return Ok("Player updated successfully.");
     }

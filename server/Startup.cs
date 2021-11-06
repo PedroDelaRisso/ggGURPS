@@ -30,6 +30,7 @@ public class Startup
         services.AddTransient<IGameMastersService, GameMastersService>();
         services.AddTransient<IPlayersService, PlayersService>();
         services.AddTransient<ICampaignsService, CampaignsService>();
+        services.AddTransient<ICharactersService, CharactersService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

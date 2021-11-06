@@ -42,13 +42,19 @@ public class GameMastersService : IGameMastersService
             throw new KeyNotFoundException();
 
         var campaigns = await _context.Campaigns.Where(c => c.GameMasterId == gameMaster.Id).ToListAsync();
-        gameMaster.Campaigns = campaigns;
 
         var gameMasterDTO = new GetGameMasterByIdDTO(gameMaster.Id, gameMaster.Name);
-        foreach(Campaign campaign in gameMaster.Campaigns)
+        foreach(Campaign campaign in campaigns)
         {
             gameMasterDTO.Campaigns.Add(new GetCampaignsByGameMasterDTO(campaign.Id, campaign.Name));
         }
+
+        var characters = await _context.Characters.Where(c => c.GameMasterId == id).ToListAsync();
+        foreach(Character character in characters)
+        {
+            gameMasterDTO.Characters.Add(new GetCharactersDTO(character.Id, character.Name));
+        }
+
         foreach(Roll roll in gameMaster.Rolls)
         {
             gameMasterDTO.Rolls.Add(new GetRollsDTO(roll.Id, roll.FinalResult));

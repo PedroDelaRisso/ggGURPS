@@ -39,4 +39,12 @@ public class CampaignsController : ControllerBase
 
         return Ok("Campaign updated successfully!");
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(long id)
+    {
+        await _service.Delete(id);
+
+        return Ok("Campaign removed successfully.");
+    }
 }
