@@ -39,7 +39,7 @@ public class CharactersController : ControllerBase
         return Ok("Character updated succcessfully.");
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         await _service.Delete(id);
