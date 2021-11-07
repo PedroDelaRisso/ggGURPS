@@ -86,6 +86,30 @@ public class CharactersService : ICharactersService
                                                     gameMasterName,
                                                     character.CampaignId,
                                                     campaignName);
+        return characterDTO;
+    }
+
+    public async Task Update(long id, PutCharacterDTO characterDTO)
+    {
+        var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
+        if (character == null)
+            throw new KeyNotFoundException("Character not found!");
+        characterDTO.Id = id;
+        character.Name = characterDTO.Name;
+        character.Age = characterDTO.Age;
+        character.Birthday = characterDTO.Birthday;
+        character.PhysicalDescription = characterDTO.PhysicalDescription;
+        _context.Update(character);
+        await this.Save();
+    }
+
+    public async Task Delete(long id)
+    {
+        var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
+        if (character == null)
+            throw new KeyNotFoundException("Character not found!");
+        _context.Characters.Remove(character);
+        await this.Save();
     }
 
     private async Task Save()

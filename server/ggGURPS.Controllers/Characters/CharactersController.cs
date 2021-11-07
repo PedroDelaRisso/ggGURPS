@@ -19,9 +19,30 @@ public class CharactersController : ControllerBase
 
         return Ok("Character created successfully!");
     }
+
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         return Ok(await _service.GetAll());
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(long id)
+    {
+        return Ok(await _service.GetById(id));
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(long id, [FromBody] PutCharacterDTO characterDTO)
+    {
+        await _service.Update(id, characterDTO);
+        return Ok("Character updated succcessfully.");
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete(long id)
+    {
+        await _service.Delete(id);
+        return Ok("Character deleted successfully.");
     }
 }
