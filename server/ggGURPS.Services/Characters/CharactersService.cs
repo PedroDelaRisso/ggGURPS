@@ -17,6 +17,7 @@ public class CharactersService : ICharactersService
     {
         var character = new Character(characterDTO.Id, characterDTO.TotalPoints, characterDTO.Name);
 
+        character.TotalPoints = characterDTO.TotalPoints;
         character.RemainingPoints = characterDTO.TotalPoints;
         character.Npc = characterDTO.Npc;
 
@@ -60,6 +61,7 @@ public class CharactersService : ICharactersService
         var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
         if (character == null)
             throw new KeyNotFoundException("Character not found!");
+
         string playerName = "";
         string gameMasterName = "";
         if(character.Npc)
@@ -67,6 +69,7 @@ public class CharactersService : ICharactersService
         else
             playerName = _context.Players.FirstOrDefaultAsync(p => p.Id == character.PlayerId).Result.Name;
         string campaignName = _context.Campaigns.FirstOrDefaultAsync(c => c.Id == character.CampaignId).Result.Name;
+
         var characterDTO = new GetCharacterByIdDTO(character.Id,
                                                     character.Name,
                                                     character.Age,
@@ -148,6 +151,17 @@ public class CharactersService : ICharactersService
         character.SpentPoints += CalculatePointsSpent(levels, attribute);
 
 
+        _context.Update(character);
+        await Save();
+    }
+
+    public async Task AddPoints(long id, int points)
+    {
+        var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
+        if (character == null)
+            throw new KeyNotFoundException("Character not found!");
+        character.TotalPoints += points;
+        character.RemainingPoints += points;
         _context.Update(character);
         await Save();
     }

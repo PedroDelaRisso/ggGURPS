@@ -8,5 +8,6 @@ public interface ICharactersService
     Task<GetCharacterByIdDTO> GetById(long id);
     Task Update(long id, PutCharacterDTO characterDTO);
     Task LevelUp(long id, Attributes attribute, int levels);
+    Task AddPoints(long id, int points);
     Task Delete(long id);
 }

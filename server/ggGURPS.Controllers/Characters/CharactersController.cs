@@ -46,6 +46,13 @@ public class CharactersController : ControllerBase
         return Ok("Attribute updated successfully.");
     }
 
+    [HttpPut("{id}/Points")]
+    public async Task<IActionResult> AddPoints(long id, int points)
+    {
+        await _service.AddPoints(id, points);
+        return Ok("Points added succesfully!");
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
