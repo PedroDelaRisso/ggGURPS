@@ -23,7 +23,7 @@ public class PlayersService : IPlayersService
     public async Task<List<GetPlayersDTO>> GetAll()
     {
         var playersList = await _context.Players.ToListAsync();
-        if (!playersList.Any())
+        if(!playersList.Any())
             throw new Exception("There are no saved Players!");
 
         var playersListDTO = new List<GetPlayersDTO>();

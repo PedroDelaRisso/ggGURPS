@@ -38,7 +38,7 @@ public class GameMastersService : IGameMastersService
     public async Task<GetGameMasterByIdDTO> GetById(long id)
     {
         var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(g => g.Id == id);
-        if (gameMaster == null)
+        if(gameMaster == null)
             throw new KeyNotFoundException();
 
         var campaigns = await _context.Campaigns.Where(c => c.GameMasterId == gameMaster.Id).ToListAsync();

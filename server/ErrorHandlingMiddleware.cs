@@ -29,7 +29,7 @@ public class ErrorHandlingMiddleware
     private static Task HandleExceptionAsync(HttpContext context, Exception ex) {
         var code = HttpStatusCode.InternalServerError;
 
-        if (ex is KeyNotFoundException)
+        if(ex is KeyNotFoundException)
         {
             code = HttpStatusCode.NotFound;
         }

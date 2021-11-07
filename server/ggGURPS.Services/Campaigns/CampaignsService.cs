@@ -30,7 +30,7 @@ public class CampaignsService : ICampaignsService
     public async Task<List<GetCampaignsDTO>> GetAll()
     {
         var campaignList = await _context.Campaigns.ToListAsync();
-        if (!campaignList.Any())
+        if(!campaignList.Any())
             throw new Exception("There are no saved Campaigns!");
         var campaingListDTO = new List<GetCampaignsDTO>();
         foreach(Campaign c in campaignList)

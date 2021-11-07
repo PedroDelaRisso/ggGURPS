@@ -27,7 +27,7 @@ public class CharactersService : ICharactersService
         character.CampaignId = characterDTO.CampaignId;
 
 
-        if (characterDTO.Npc)
+        if(characterDTO.Npc)
         {
             character.PlayerId = null;
             character.GameMasterId = characterDTO.GameMasterId;
@@ -59,7 +59,7 @@ public class CharactersService : ICharactersService
     public async Task<GetCharacterByIdDTO> GetById(long id)
     {
         var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if (character == null)
+        if(character == null)
             throw new KeyNotFoundException("Character not found!");
 
         string playerName = "";
@@ -99,7 +99,7 @@ public class CharactersService : ICharactersService
     public async Task Update(long id, PutCharacterDTO characterDTO)
     {
         var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if (character == null)
+        if(character == null)
             throw new KeyNotFoundException("Character not found!");
         characterDTO.Id = id;
         character.Name = characterDTO.Name;
@@ -113,9 +113,9 @@ public class CharactersService : ICharactersService
     public async Task LevelUp(long id, Attributes attribute, int levels)
     {
         var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if (character == null)
+        if(character == null)
             throw new KeyNotFoundException("Character not found!");
-        switch (attribute)
+        switch(attribute)
         {
             case Attributes.Strength:
                 character.Strength += levels;
@@ -158,7 +158,7 @@ public class CharactersService : ICharactersService
     public async Task AddPoints(long id, int points)
     {
         var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if (character == null)
+        if(character == null)
             throw new KeyNotFoundException("Character not found!");
         character.TotalPoints += points;
         character.RemainingPoints += points;
@@ -169,7 +169,7 @@ public class CharactersService : ICharactersService
     public async Task Delete(long id)
     {
         var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if (character == null)
+        if(character == null)
             throw new KeyNotFoundException("Character not found!");
         _context.Characters.Remove(character);
         await Save();
@@ -178,7 +178,7 @@ public class CharactersService : ICharactersService
     private int CalculatePointsSpent(int levelsAdded, Attributes attribute)
     {
         int pointsSpent = 0;
-        switch (attribute)
+        switch(attribute)
         {
             case Attributes.Dexterity:
             case Attributes.Inteligence:
