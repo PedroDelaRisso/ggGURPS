@@ -17,7 +17,7 @@ public class PlayersService : IPlayersService
     {
         var player = new Player(playerDTO.Id, playerDTO.Name);
         _context.Players.Add(player);
-        await this.Save();
+        await Save();
     }
 
     public async Task<List<GetPlayersDTO>> GetAll()
@@ -63,7 +63,7 @@ public class PlayersService : IPlayersService
         player.Name = playerDTO.Name;
         _context.Players.Update(player);
 
-        await this.Save();
+        await Save();
     }
 
     public async Task Delete(long id)
@@ -73,7 +73,7 @@ public class PlayersService : IPlayersService
             throw new KeyNotFoundException();
         
         _context.Players.Remove(player);
-        await this.Save();
+        await Save();
     }
 
     private async Task Save()

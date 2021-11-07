@@ -17,7 +17,7 @@ public class GameMastersService : IGameMastersService
         var gameMaster = new GameMaster(gameMasterDTO.Id, gameMasterDTO.Name);
         _context.GameMasters.Add(gameMaster);
 
-        await this.Save();
+        await Save();
     }
 
     public async Task<List<GetGameMastersDTO>> GetAll()
@@ -73,7 +73,7 @@ public class GameMastersService : IGameMastersService
         gameMaster.Name = gameMasterDTO.Name;
 
         _context.GameMasters.Update(gameMaster);
-        await this.Save();
+        await Save();
     }
 
     public async Task Delete(long id)
@@ -83,7 +83,7 @@ public class GameMastersService : IGameMastersService
             throw new KeyNotFoundException();
 
         _context.GameMasters.Remove(gameMaster);
-        await this.Save();
+        await Save();
     }
 
     private async Task Save()

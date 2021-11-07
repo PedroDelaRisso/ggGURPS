@@ -24,7 +24,7 @@ public class CampaignsService : ICampaignsService
 
         _context.Campaigns.Add(campaign);
 
-        await this.Save();
+        await Save();
     }
 
     public async Task<List<GetCampaignsDTO>> GetAll()
@@ -57,7 +57,7 @@ public class CampaignsService : ICampaignsService
         campaign.GameMasterId = campaignDTO.GameMasterId;
 
         _context.Update(campaign);
-        await this.Save();
+        await Save();
     }
 
     public async Task<GetCampaignByIdDTO> GetById(long id)
@@ -90,7 +90,7 @@ public class CampaignsService : ICampaignsService
         if(campaign == null)
             throw new KeyNotFoundException();
         _context.Campaigns.Remove(campaign);
-        await this.Save();
+        await Save();
     }
 
     private async Task Save()

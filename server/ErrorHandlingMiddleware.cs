@@ -11,7 +11,7 @@ public class ErrorHandlingMiddleware
 
     public ErrorHandlingMiddleware(RequestDelegate next)
     {
-        this.Next = next;
+        Next = next;
     }
 
     public async Task Invoke(HttpContext context)
