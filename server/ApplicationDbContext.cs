@@ -28,5 +28,10 @@ public class ApplicationDbContext : DbContext
             .HasMany(left => left.Items)
             .WithMany(right => right.Characters)
             .UsingEntity(join => join.ToTable("TableRelations_CharactersToItems"));
+
+        modelBuilder.Entity<Campaign>()
+            .HasMany(left => left.Players)
+            .WithMany(right => right.Campaigns)
+            .UsingEntity(join => join.ToTable("TableRelations_CampaignsToPlayers"));
     }
 }
