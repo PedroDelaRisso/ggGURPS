@@ -39,6 +39,13 @@ public class CharactersController : ControllerBase
         return Ok("Character updated succcessfully.");
     }
 
+    [HttpPut("{id}/LevelUp/{attribute}")]
+    public async Task<IActionResult> LevelUp(long id, Attributes attribute, int levels)
+    {
+        await _service.LevelUp(id, attribute, levels);
+        return Ok("Attribute updated successfully.");
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {

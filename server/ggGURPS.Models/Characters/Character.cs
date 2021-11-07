@@ -49,6 +49,10 @@ public class Character
         Perception = 10;
         Npc = false;
 
+        TotalPoints = 0;
+        RemainingPoints = 0;
+        SpentPoints = 0;
+
         Advantages = new List<Advantage>();
         Skills = new List<Skill>();
         Items = new List<Item>();
