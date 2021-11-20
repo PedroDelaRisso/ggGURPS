@@ -201,6 +201,10 @@ public class CharacterService : ICharacterService
         var advantage = await _advantageService.GetAdvantageById(advantageId);
         
         var relation = new CharacterAdvantage(){ CharacterId = characterId, AdvantageId = advantageId};
+        bool relationAlreadyExists = _context.CharacterAdvantage.Any(c => c.CharacterId == relation.CharacterId
+                                                                       && c.AdvantageId == relation.AdvantageId);
+        if(relationAlreadyExists)
+            throw new Exception("You can't add more than one of the same Advantage to the same Character.");
 
         character.Advantages.Add(relation);
         advantage.Characters.Add(relation);
