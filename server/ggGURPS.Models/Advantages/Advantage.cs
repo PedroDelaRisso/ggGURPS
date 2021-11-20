@@ -5,5 +5,10 @@ public class Advantage
     public int Price { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public ICollection<Character> Characters { get; set; }
+    public ICollection<CharacterAdvantage> Characters { get; set; }
+
+    public Advantage()
+    {
+        Characters = new List<CharacterAdvantage>();
+    }
 }

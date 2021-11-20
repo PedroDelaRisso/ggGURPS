@@ -3,14 +3,16 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ggGURPS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211120135647_CharacterAdvantageJoinClass")]
+    partial class CharacterAdvantageJoinClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +39,21 @@ namespace ggGURPS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Advantages");
+                });
+
+            modelBuilder.Entity("AdvantageCharacter", b =>
+                {
+                    b.Property<long>("AdvantagesId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CharactersId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("AdvantagesId", "CharactersId");
+
+                    b.HasIndex("CharactersId");
+
+                    b.ToTable("TableRelations_CharactersToAdvantages");
                 });
 
             modelBuilder.Entity("Campaign", b =>
@@ -161,7 +178,7 @@ namespace ggGURPS.Migrations
 
                     b.HasIndex("AdvantageId");
 
-                    b.ToTable("TableRelations_CharactersToAdvantages");
+                    b.ToTable("CharacterAdvantage");
                 });
 
             modelBuilder.Entity("CharacterSkill", b =>
@@ -239,6 +256,21 @@ namespace ggGURPS.Migrations
                     b.ToTable("Skills");
                 });
 
+            modelBuilder.Entity("AdvantageCharacter", b =>
+                {
+                    b.HasOne("Advantage", null)
+                        .WithMany()
+                        .HasForeignKey("AdvantagesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Character", null)
+                        .WithMany()
+                        .HasForeignKey("CharactersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Campaign", b =>
                 {
                     b.HasOne("GameMaster", "GameMaster")
@@ -291,13 +323,13 @@ namespace ggGURPS.Migrations
             modelBuilder.Entity("CharacterAdvantage", b =>
                 {
                     b.HasOne("Advantage", "Advantage")
-                        .WithMany("Characters")
+                        .WithMany()
                         .HasForeignKey("AdvantageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Character", "Character")
-                        .WithMany("Advantages")
+                        .WithMany()
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -322,19 +354,9 @@ namespace ggGURPS.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Advantage", b =>
-                {
-                    b.Navigation("Characters");
-                });
-
             modelBuilder.Entity("Campaign", b =>
                 {
                     b.Navigation("Characters");
-                });
-
-            modelBuilder.Entity("Character", b =>
-                {
-                    b.Navigation("Advantages");
                 });
 
             modelBuilder.Entity("GameMaster", b =>

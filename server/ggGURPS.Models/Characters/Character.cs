@@ -24,7 +24,7 @@ public class Character
     public GameMaster GameMaster { get; set; }
     public long CampaignId { get; set; }
     public Campaign Campaign { get; set; }
-    public ICollection<Advantage> Advantages { get; set; }
+    public ICollection<CharacterAdvantage> Advantages { get; set; }
     public ICollection<Skill> Skills { get; set; }
 
     public Character(long id, int totalPoints, string name)
@@ -47,7 +47,7 @@ public class Character
         Perception = 10;
         Npc = false;
 
-        Advantages = new List<Advantage>();
+        Advantages = new List<CharacterAdvantage>();
         Skills = new List<Skill>();
 
     }

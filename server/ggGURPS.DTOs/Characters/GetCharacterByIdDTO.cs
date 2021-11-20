@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class GetCharacterByIdDTO
 {
     public long Id { get; set; }
@@ -23,7 +25,7 @@ public class GetCharacterByIdDTO
     public string GameMasterName { get; set; }
     public long CampaignId { get; set; }
     public string CampaignName { get; set; }
-    // public ICollection<GetAdvantagesDTO> Advantages { get; set; }
+    public ICollection<AdvantagesDTO> Advantages { get; set; }
     // public ICollection<GetSkillsDTO> Skills { get; set; }
     // public ICollection<GetItemsDTO> Items { get; set; }
     // public ICollection<GetRollsDTO> Rolls { get; set; }
@@ -74,7 +76,7 @@ public class GetCharacterByIdDTO
         GameMasterName = gameMasterName;
         CampaignId = campaignId;
         CampaignName = campaignName;
-        //Advantages = new List<GetAdvantagesDTO>();
+        Advantages = new List<AdvantagesDTO>();
         //Skills = new List<GetSkillsDTO>();
         //Items = new List<GetItemsDTO>();
     }

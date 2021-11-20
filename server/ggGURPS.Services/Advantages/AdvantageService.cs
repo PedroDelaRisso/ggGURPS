@@ -12,7 +12,7 @@ public class AdvantageService : IAdvantageService
         _context = context;
     }
 
-    private async Task<Advantage> GetAdvantageById(long id)
+    public async Task<Advantage> GetAdvantageById(long id)
     {
         var advantage = await _context.Advantages.FirstOrDefaultAsync(a => a.Id == id);
         if (advantage == null)

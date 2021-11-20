@@ -59,4 +59,11 @@ public class CharactersController : ControllerBase
         await _characterService.Delete(id);
         return Ok("Character deleted successfully.");
     }
+
+    [HttpPut("{characterId}/Advantages/Add/{advantageId}")]
+    public async Task<IActionResult> AddAdvantage(long characterId, long advantageId)
+    {
+        await _characterService.AddAdvantage(characterId, advantageId);
+        return Ok("Advantage added successfully!");
+    }
 }

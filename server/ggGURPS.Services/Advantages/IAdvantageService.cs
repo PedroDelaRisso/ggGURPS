@@ -5,6 +5,7 @@ public interface IAdvantageService
 {
     Task Create(PostAdvantageDTO advantageDTO);
     Task<List<AdvantagesDTO>> GetAll();
+    Task<Advantage> GetAdvantageById(long id);
     Task<GetAdvantageByIdDTO> GetById(long id);
     Task<PutAdvantageDTO> Update(PutAdvantageDTO advantageDTO);
     Task Delete(long id);

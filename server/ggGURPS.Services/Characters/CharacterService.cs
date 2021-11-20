@@ -7,10 +7,26 @@ using Microsoft.EntityFrameworkCore;
 public class CharacterService : ICharacterService
 {
     private readonly ApplicationDbContext _context;
+    private readonly IAdvantageService _advantageService;
 
-    public CharacterService(ApplicationDbContext context)
+    public CharacterService(ApplicationDbContext context,
+                            IAdvantageService advantageService)
     {
         _context = context;
+        _advantageService = advantageService;
+    }
+
+    public async Task<Character> GetCharacterById(long id)
+    {
+        var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
+        if(character == null)
+            throw new KeyNotFoundException("Character not found!");
+        return character;
+    }
+
+    private async Task SaveAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 
     public async Task Create(PostCharacterDTO characterDTO)
@@ -39,7 +55,7 @@ public class CharacterService : ICharacterService
         }
 
         _context.Characters.Add(character);
-        await Save();
+        await SaveAsync();
     }
 
     public async Task<List<GetCharactersDTO>> GetAll()
@@ -58,9 +74,7 @@ public class CharacterService : ICharacterService
 
     public async Task<GetCharacterByIdDTO> GetById(long id)
     {
-        var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if(character == null)
-            throw new KeyNotFoundException("Character not found!");
+        var character = await GetCharacterById(id);
 
         string playerName = "";
         string gameMasterName = "";
@@ -93,28 +107,38 @@ public class CharacterService : ICharacterService
                                                     gameMasterName,
                                                     character.CampaignId,
                                                     campaignName);
+        var characterAdvantagesRelations = await _context.CharacterAdvantage.Where(x => x.CharacterId == character.Id).ToListAsync();
+        var advantages = new List<Advantage>();
+        var advantagesDTO = new List<AdvantagesDTO>();
+        foreach(var advRelations in characterAdvantagesRelations)
+        {
+            var adv = await _context.Advantages.FirstOrDefaultAsync(a => a.Id == advRelations.AdvantageId);
+            advantages.Add(adv);
+        }
+        foreach(var adv in advantages)
+        {
+            advantagesDTO.Add(new AdvantagesDTO(){ Id = adv.Id, Name = adv.Name, Price = adv.Price });
+        }
+        characterDTO.Advantages = advantagesDTO;
         return characterDTO;
     }
 
     public async Task Update(long id, PutCharacterDTO characterDTO)
     {
-        var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if(character == null)
-            throw new KeyNotFoundException("Character not found!");
+        var character = await GetCharacterById(characterDTO.Id);
         characterDTO.Id = id;
         character.Name = characterDTO.Name;
         character.Age = characterDTO.Age;
         character.Birthday = characterDTO.Birthday;
         character.PhysicalDescription = characterDTO.PhysicalDescription;
         _context.Update(character);
-        await Save();
+        await SaveAsync();
     }
 
     public async Task LevelUp(long id, Attributes attribute, int levels)
     {
-        var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if(character == null)
-            throw new KeyNotFoundException("Character not found!");
+        var character = await GetCharacterById(id);
+
         switch(attribute)
         {
             case Attributes.Strength:
@@ -152,27 +176,37 @@ public class CharacterService : ICharacterService
 
 
         _context.Update(character);
-        await Save();
+        await SaveAsync();
     }
 
     public async Task AddPoints(long id, int points)
     {
-        var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if(character == null)
-            throw new KeyNotFoundException("Character not found!");
+        var character = await GetCharacterById(id);
         character.TotalPoints += points;
         character.RemainingPoints += points;
         _context.Update(character);
-        await Save();
+        await SaveAsync();
     }
 
     public async Task Delete(long id)
     {
-        var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if(character == null)
-            throw new KeyNotFoundException("Character not found!");
+        var character = await GetCharacterById(id);
         _context.Characters.Remove(character);
-        await Save();
+        await SaveAsync();
+    }
+
+    public async Task AddAdvantage(long characterId, long advantageId)
+    {
+        var character = await GetCharacterById(characterId);
+        var advantage = await _advantageService.GetAdvantageById(advantageId);
+        
+        var relation = new CharacterAdvantage(){ CharacterId = characterId, AdvantageId = advantageId};
+
+        character.Advantages.Add(relation);
+        advantage.Characters.Add(relation);
+        _context.Characters.Update(character);
+        _context.Advantages.Update(advantage);
+        await SaveAsync();
     }
 
     private int CalculatePointsSpent(int levelsAdded, Attributes attribute)
@@ -200,10 +234,5 @@ public class CharacterService : ICharacterService
                 break;
         }
         return pointsSpent;
-    }
-
-    private async Task Save()
-    {
-        await _context.SaveChangesAsync();
     }
 }
