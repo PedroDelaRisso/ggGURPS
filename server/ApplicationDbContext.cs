@@ -18,21 +18,12 @@ public class ApplicationDbContext : DbContext
     {
         modelBuilder
             .Entity<CharacterAdvantage>()
+            .ToTable("TableRelations_CharactersToAdvantages")
             .HasKey(pk => new { pk.CharacterId, pk.AdvantageId });
-        base.OnModelCreating(modelBuilder);
-
-        modelBuilder
-            .Entity<CharacterAdvantage>()
-            .ToTable("TableRelations_CharactersToAdvantages");
 
         modelBuilder.Entity<Character>()
             .HasMany(left => left.Skills)
             .WithMany(right => right.Characters)
             .UsingEntity(join => join.ToTable("TableRelations_CharactersToSkills"));
-
-        modelBuilder.Entity<Campaign>()
-            .HasMany(left => left.Players)
-            .WithMany(right => right.Campaigns)
-            .UsingEntity(join => join.ToTable("TableRelations_CampaignsToPlayers"));
     }
 }
