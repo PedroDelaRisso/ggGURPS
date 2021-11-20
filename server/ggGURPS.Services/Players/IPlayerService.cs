@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public interface IPlayersService
+public interface IPlayerService
 {
     Task Create(PostPlayerDTO playerDTO);
     Task<List<GetPlayersDTO>> GetAll();

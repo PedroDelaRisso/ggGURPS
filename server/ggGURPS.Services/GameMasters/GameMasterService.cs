@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-public class GameMastersService : IGameMastersService
+public class GameMastersService : IGameMasterService
 {
     private readonly ApplicationDbContext _context;
     public GameMastersService(ApplicationDbContext context)
@@ -53,11 +53,6 @@ public class GameMastersService : IGameMastersService
         foreach(Character character in characters)
         {
             gameMasterDTO.Characters.Add(new GetCharactersDTO(character.Id, character.Name));
-        }
-
-        foreach(Roll roll in gameMaster.Rolls)
-        {
-            gameMasterDTO.Rolls.Add(new GetRollsDTO(roll.Id, roll.FinalResult));
         }
 
         return gameMasterDTO;

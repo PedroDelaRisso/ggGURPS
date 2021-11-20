@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public interface ICharactersService
+public interface ICharacterService
 {
     Task Create(PostCharacterDTO playerDTO);
     Task<List<GetCharactersDTO>> GetAll();

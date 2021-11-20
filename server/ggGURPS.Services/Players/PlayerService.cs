@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-public class PlayersService : IPlayersService
+public class PlayerService : IPlayerService
 {
     private readonly ApplicationDbContext _context;
 
-    public PlayersService(ApplicationDbContext context)
+    public PlayerService(ApplicationDbContext context)
     {
         _context = context;
     }

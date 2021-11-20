@@ -10,5 +10,4 @@ public class Skill
     public BaseAttribute BaseAttribute { get; set; }
     public int Level { get; set; }
     public ICollection<Character> Characters { get; set; }
-    public ICollection<Roll> Rolls { get; set; }
 }

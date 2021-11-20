@@ -27,10 +27,11 @@ public class Startup
         var connectionString = Configuration.GetConnectionString("Default");
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-        services.AddTransient<IGameMastersService, GameMastersService>();
-        services.AddTransient<IPlayersService, PlayersService>();
-        services.AddTransient<ICampaignsService, CampaignsService>();
-        services.AddTransient<ICharactersService, CharactersService>();
+        services.AddTransient<IGameMasterService, GameMastersService>();
+        services.AddTransient<IPlayerService, PlayerService>();
+        services.AddTransient<ICampaignService, CampaignsService>();
+        services.AddTransient<ICharacterService, CharacterService>();
+        services.AddTransient<IAdvantageService, AdvantageService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

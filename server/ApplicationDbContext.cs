@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 public class ApplicationDbContext : DbContext
@@ -7,11 +9,10 @@ public class ApplicationDbContext : DbContext
     public DbSet<Character> Characters { get; set; }
     public DbSet<Advantage> Advantages { get; set; }
     public DbSet<Skill> Skills { get; set; }
-    public DbSet<Item> Items { get; set; }
     public DbSet<Campaign> Campaigns { get; set; }
-    public DbSet<Roll> Rolls { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Character>()
@@ -23,11 +24,6 @@ public class ApplicationDbContext : DbContext
             .HasMany(left => left.Skills)
             .WithMany(right => right.Characters)
             .UsingEntity(join => join.ToTable("TableRelations_CharactersToSkills"));
-
-        modelBuilder.Entity<Character>()
-            .HasMany(left => left.Items)
-            .WithMany(right => right.Characters)
-            .UsingEntity(join => join.ToTable("TableRelations_CharactersToItems"));
 
         modelBuilder.Entity<Campaign>()
             .HasMany(left => left.Players)

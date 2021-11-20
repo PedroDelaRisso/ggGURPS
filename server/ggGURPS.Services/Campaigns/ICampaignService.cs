@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public interface ICampaignsService
+public interface ICampaignService
 {
     Task Create(PostCampaignDTO campaignDTO);
     Task<List<GetCampaignsDTO>> GetAll();

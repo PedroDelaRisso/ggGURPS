@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-public class CharactersService : ICharactersService
+public class CharacterService : ICharacterService
 {
     private readonly ApplicationDbContext _context;
 
-    public CharactersService(ApplicationDbContext context)
+    public CharacterService(ApplicationDbContext context)
     {
         _context = context;
     }

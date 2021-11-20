@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public interface IGameMastersService
+public interface IGameMasterService
 {
     Task<List<GetGameMastersDTO>> GetAll();
     Task<GetGameMasterByIdDTO> GetById(long id);

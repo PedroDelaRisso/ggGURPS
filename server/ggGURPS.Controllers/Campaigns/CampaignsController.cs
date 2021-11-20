@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 [Route("[controller]")]
 public class CampaignsController : ControllerBase
 {
-    private readonly ICampaignsService _service;
+    private readonly ICampaignService _campaignService;
 
-    public CampaignsController(ICampaignsService service)
+    public CampaignsController(ICampaignService campaignService)
     {
-        _service = service;
+        _campaignService = campaignService;
     }
     
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] PostCampaignDTO campaignDTO)
     {
-        await _service.Create(campaignDTO);
+        await _campaignService.Create(campaignDTO);
 
         return Ok("Campaign created successfully!");
     }
@@ -23,19 +23,19 @@ public class CampaignsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _service.GetAll());
+        return Ok(await _campaignService.GetAll());
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
-        return Ok(await _service.GetById(id));
+        return Ok(await _campaignService.GetById(id));
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(long id, [FromBody] PutCampaignDTO campaignDTO)
     {
-        await _service.Update(id, campaignDTO);
+        await _campaignService.Update(id, campaignDTO);
 
         return Ok("Campaign updated successfully!");
     }
@@ -43,7 +43,7 @@ public class CampaignsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
-        await _service.Delete(id);
+        await _campaignService.Delete(id);
 
         return Ok("Campaign removed successfully.");
     }

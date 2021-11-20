@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-public class CampaignsService : ICampaignsService
+public class CampaignsService : ICampaignService
 {
     private readonly ApplicationDbContext _context;
 

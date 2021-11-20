@@ -26,8 +26,6 @@ public class Character
     public Campaign Campaign { get; set; }
     public ICollection<Advantage> Advantages { get; set; }
     public ICollection<Skill> Skills { get; set; }
-    public ICollection<Item> Items { get; set; }
-    public ICollection<Roll> Rolls { get; set; }
 
     public Character(long id, int totalPoints, string name)
     {
@@ -51,8 +49,6 @@ public class Character
 
         Advantages = new List<Advantage>();
         Skills = new List<Skill>();
-        Items = new List<Item>();
-        Rolls = new List<Roll>();
 
     }
 }

@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 [Route("[controller]")]
 public class GameMastersController : ControllerBase
 {
-    private readonly IGameMastersService _service;
-    public GameMastersController(IGameMastersService service)
+    private readonly IGameMasterService _gameMasterService;
+    public GameMastersController(IGameMasterService gameMasterService)
     {
-        _service = service;
+        _gameMasterService = gameMasterService;
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] PostGameMasterDTO gameMasterDTO)
     {
-        await _service.Create(gameMasterDTO);
+        await _gameMasterService.Create(gameMasterDTO);
 
         return Ok("Game Master saved successfully!");
     }
@@ -22,20 +22,20 @@ public class GameMastersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _service.GetAll());
+        return Ok(await _gameMasterService.GetAll());
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(long id)
     {
-        return Ok(await _service.GetById(id));
+        return Ok(await _gameMasterService.GetById(id));
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(long id, [FromBody] PutGameMasterDTO gameMasterDTO)
     {
         gameMasterDTO.Id = id;
-        await _service.Update(gameMasterDTO);
+        await _gameMasterService.Update(gameMasterDTO);
 
         return Ok("Game Master updated successfully.");
     }
@@ -43,7 +43,7 @@ public class GameMastersController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
-        await _service.Delete(id);
+        await _gameMasterService.Delete(id);
 
         return Ok("Game Master removed successfully.");
     }

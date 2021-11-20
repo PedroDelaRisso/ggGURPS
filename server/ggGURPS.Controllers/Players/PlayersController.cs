@@ -3,19 +3,19 @@ using System.Threading.Tasks;
 
 [ApiController]
 [Route("[controller]")]
-public class PlayersController : ControllerBase
+public class PlayerController : ControllerBase
 {
-    private readonly IPlayersService _service;
+    private readonly IPlayerService _playerService;
     
-    public PlayersController(IPlayersService service)
+    public PlayerController(IPlayerService playerService)
     {
-        _service = service;
+        _playerService = playerService;
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] PostPlayerDTO playerDTO)
     {
-        await _service.Create(playerDTO);
+        await _playerService.Create(playerDTO);
 
         return Ok("Player saved successfully!");
     }
@@ -23,19 +23,19 @@ public class PlayersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _service.GetAll());
+        return Ok(await _playerService.GetAll());
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
-        return Ok(await _service.GetById(id));
+        return Ok(await _playerService.GetById(id));
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(long id, [FromBody] PutPlayerDTO playerDTO)
     {
-        await _service.Update(id, playerDTO);
+        await _playerService.Update(id, playerDTO);
 
         return Ok("Player updated successfully.");
     }
@@ -43,7 +43,7 @@ public class PlayersController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
-        await _service.Delete(id);
+        await _playerService.Delete(id);
 
         return Ok("Player removed successfully.");
     }
