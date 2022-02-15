@@ -6,7 +6,7 @@ Welcome to ggGURPS. A WIP web app to facilitate GURPS campaigns.
 
 This is being done as a side personal passion project as a means to study the stack used on my job.
 
-ggGURPS currently uses .NET 5 as the backend framework and the plan is to use VueJS with VueX as the frontend framework.
+ggGURPS currently uses .NET 5 as the backend framework and Svelte for the frontend.
 
 GURPS is an RPG system published by Steve Jackson Games. Its name means Generic Universal Role Playing System. It's a very complex and complete RPG system.
 
