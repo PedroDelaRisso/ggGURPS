@@ -3,14 +3,16 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ggGURPS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211120140657_NewCharacterAdvantageTable")]
+    partial class NewCharacterAdvantageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,6 +59,21 @@ namespace ggGURPS.Migrations
                     b.HasIndex("GameMasterId");
 
                     b.ToTable("Campaigns");
+                });
+
+            modelBuilder.Entity("CampaignPlayer", b =>
+                {
+                    b.Property<long>("CampaignsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PlayersId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CampaignsId", "PlayersId");
+
+                    b.HasIndex("PlayersId");
+
+                    b.ToTable("TableRelations_CampaignsToPlayers");
                 });
 
             modelBuilder.Entity("Character", b =>
@@ -233,6 +250,21 @@ namespace ggGURPS.Migrations
                         .IsRequired();
 
                     b.Navigation("GameMaster");
+                });
+
+            modelBuilder.Entity("CampaignPlayer", b =>
+                {
+                    b.HasOne("Campaign", null)
+                        .WithMany()
+                        .HasForeignKey("CampaignsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Player", null)
+                        .WithMany()
+                        .HasForeignKey("PlayersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Character", b =>

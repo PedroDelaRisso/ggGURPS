@@ -1,6 +1,6 @@
 <p align="center">placeholder title</p>
 <h1 align="center"><b>ggGURPS</b></h1>
-<p align="center">🚧 Work in progress... 🚧</p>
+<p align="center">🚧 Work in progress.. 🚧</p>
 
 Welcome to ggGURPS. A WIP web app to facilitate GURPS campaigns.
 

@@ -3,14 +3,16 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ggGURPS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211120122124_TemporarilyRemovedAdvantagesAffectedAttribute")]
+    partial class TemporarilyRemovedAdvantagesAffectedAttribute
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,6 +41,21 @@ namespace ggGURPS.Migrations
                     b.ToTable("Advantages");
                 });
 
+            modelBuilder.Entity("AdvantageCharacter", b =>
+                {
+                    b.Property<long>("AdvantagesId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CharactersId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("AdvantagesId", "CharactersId");
+
+                    b.HasIndex("CharactersId");
+
+                    b.ToTable("TableRelations_CharactersToAdvantages");
+                });
+
             modelBuilder.Entity("Campaign", b =>
                 {
                     b.Property<long>("Id")
@@ -57,6 +74,21 @@ namespace ggGURPS.Migrations
                     b.HasIndex("GameMasterId");
 
                     b.ToTable("Campaigns");
+                });
+
+            modelBuilder.Entity("CampaignPlayer", b =>
+                {
+                    b.Property<long>("CampaignsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PlayersId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CampaignsId", "PlayersId");
+
+                    b.HasIndex("PlayersId");
+
+                    b.ToTable("TableRelations_CampaignsToPlayers");
                 });
 
             modelBuilder.Entity("Character", b =>
@@ -134,21 +166,6 @@ namespace ggGURPS.Migrations
                     b.ToTable("Characters");
                 });
 
-            modelBuilder.Entity("CharacterAdvantage", b =>
-                {
-                    b.Property<long>("CharacterId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("AdvantageId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("CharacterId", "AdvantageId");
-
-                    b.HasIndex("AdvantageId");
-
-                    b.ToTable("TableRelations_CharactersToAdvantages");
-                });
-
             modelBuilder.Entity("CharacterSkill", b =>
                 {
                     b.Property<long>("CharactersId")
@@ -224,6 +241,21 @@ namespace ggGURPS.Migrations
                     b.ToTable("Skills");
                 });
 
+            modelBuilder.Entity("AdvantageCharacter", b =>
+                {
+                    b.HasOne("Advantage", null)
+                        .WithMany()
+                        .HasForeignKey("AdvantagesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Character", null)
+                        .WithMany()
+                        .HasForeignKey("CharactersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Campaign", b =>
                 {
                     b.HasOne("GameMaster", "GameMaster")
@@ -233,6 +265,21 @@ namespace ggGURPS.Migrations
                         .IsRequired();
 
                     b.Navigation("GameMaster");
+                });
+
+            modelBuilder.Entity("CampaignPlayer", b =>
+                {
+                    b.HasOne("Campaign", null)
+                        .WithMany()
+                        .HasForeignKey("CampaignsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Player", null)
+                        .WithMany()
+                        .HasForeignKey("PlayersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Character", b =>
@@ -258,25 +305,6 @@ namespace ggGURPS.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("CharacterAdvantage", b =>
-                {
-                    b.HasOne("Advantage", "Advantage")
-                        .WithMany("Characters")
-                        .HasForeignKey("AdvantageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Character", "Character")
-                        .WithMany("Advantages")
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Advantage");
-
-                    b.Navigation("Character");
-                });
-
             modelBuilder.Entity("CharacterSkill", b =>
                 {
                     b.HasOne("Character", null)
@@ -292,19 +320,9 @@ namespace ggGURPS.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Advantage", b =>
-                {
-                    b.Navigation("Characters");
-                });
-
             modelBuilder.Entity("Campaign", b =>
                 {
                     b.Navigation("Characters");
-                });
-
-            modelBuilder.Entity("Character", b =>
-                {
-                    b.Navigation("Advantages");
                 });
 
             modelBuilder.Entity("GameMaster", b =>
