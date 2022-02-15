@@ -1,4 +1,4 @@
-public class PlayerCharacterInputDTO
+public class CharacterInputDTO
 {
     public long Id { get; set; }
     public string CharacterName { get; set; }
@@ -10,7 +10,7 @@ public class PlayerCharacterInputDTO
     public int HitPoints { get; set; }
     public long GameMasterId { get; set; }
 
-    public PlayerCharacterInputDTO(long id,
+    public CharacterInputDTO(long id,
                                     string characterName,
                                     int strength,
                                     int dexterity,
@@ -20,6 +20,7 @@ public class PlayerCharacterInputDTO
                                     int hitPoints,
                                     long gameMasterId)
     {
+        Id = id;
         CharacterName = characterName;
         Strength = strength;
         Dexterity = dexterity;

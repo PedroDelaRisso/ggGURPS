@@ -6,11 +6,11 @@ public class GameMaster
 
     public string Name { get; set; }
 
-    public ICollection<PlayerCharacter> PlayerCharacters { get; set; }
+    public ICollection<Character> Characters { get; set; }
 
     public GameMaster(string name)
     {
         Name = name;
-        PlayerCharacters = new List<PlayerCharacter>();
+        Characters = new List<Character>();
     }
 }
