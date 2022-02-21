@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class AdvantagesController : ControllerBase
 {
     private readonly IAdvantageService _advantageService;

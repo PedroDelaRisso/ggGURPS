@@ -75,7 +75,7 @@ public class GameMastersService : IGameMasterService
     {
         var gameMaster = await _context.GameMasters.FirstOrDefaultAsync(g => g.Id == id);
         if(gameMaster == null)
-            throw new KeyNotFoundException();
+            throw new Exception("GameMaster not found.");
 
         _context.GameMasters.Remove(gameMaster);
         await Save();

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class GameMastersController : ControllerBase
 {
     private readonly IGameMasterService _gameMasterService;
@@ -41,7 +41,7 @@ public class GameMastersController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(long id)
+    public async Task<IActionResult> Delete([FromRoute] long id)
     {
         await _gameMasterService.Delete(id);
 
