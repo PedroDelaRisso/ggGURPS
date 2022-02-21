@@ -8,10 +8,7 @@ let gameMastersInDb = [];
 onMount(async () => {
     await fetch('https://localhost:5001/api/GameMasters')
         .then((response) => response.json())
-        .then((data)=> {
-            gameMasters = data;
-            console.log(data);
-        })
+        .then((data)=> gameMasters = data)
 });
 
 $: gameMasters = gameMastersInDb;
@@ -32,7 +29,9 @@ function createGameMaster(e) {
         headers: {
             "content-type": "application/json",
         },
-    });
+    })
+    .then((response) => response.json())
+    .then((data) => gameMasters = [...gameMasters, data]);
 }
 </script>
 
