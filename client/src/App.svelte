@@ -27,7 +27,6 @@ function deleteGameMaster(e) {
 function createGameMaster(e) {
     const gm = new GameMaster();
     gm.name = e.detail;
-    console.log(gm);
     fetch(`https://localhost:5001/api/GameMasters`, {
         method: 'Post',
         body: JSON.stringify(gm),
