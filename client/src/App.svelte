@@ -4,14 +4,19 @@ import GameMasterForm from "./components/GameMasterForm.svelte";
 import GameMasterItem from "./components/GameMasterItem.svelte";
 import GameMasterList from "./components/GameMasterList.svelte";
 import GameMaster from "./models/GameMaster";
-let gameMastersInDb = [];
-onMount(async () => {
-    await fetch('https://localhost:5001/api/GameMasters')
-        .then((response) => response.json())
-        .then((data)=> gameMasters = data)
-});
+// let gameMastersInDb = [];
+$: gameMasters = GetGameMasters() ?? [];
 
-$: gameMasters = gameMastersInDb;
+async function onMount() {
+    await GetGameMasters();
+}
+
+async function GetGameMasters() {
+    return await fetch('https://localhost:5001/api/GameMasters')
+        .then((response) => response.json())
+        .then((data) => gameMasters = data);
+}
+
 function deleteGameMaster(e) {
     const itemId = e.detail;
     fetch(`https://localhost:5001/api/GameMasters/${itemId}`, {
@@ -31,7 +36,7 @@ function createGameMaster(e) {
         },
     })
     .then((response) => response.json())
-    .then((data) => gameMasters = [...gameMasters, data]);
+    .then(() => GetGameMasters());
 }
 </script>
 
