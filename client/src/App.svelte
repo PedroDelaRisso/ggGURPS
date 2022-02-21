@@ -1,45 +1,44 @@
 <script lang="ts">
-import { onMount } from "svelte";
-import GameMasterForm from "./components/GameMasterForm.svelte";
-import GameMasterItem from "./components/GameMasterItem.svelte";
-import GameMasterList from "./components/GameMasterList.svelte";
-import GameMaster from "./models/GameMaster";
-// let gameMastersInDb = [];
-$: gameMasters = GetGameMasters() ?? [];
+  import { onMount } from "svelte";
+  import GameMasterForm from "./components/GameMasterForm.svelte";
+  import GameMasterItem from "./components/GameMasterItem.svelte";
+  import GameMasterList from "./components/GameMasterList.svelte";
+  import GameMaster from "./models/GameMaster";
+  import GameMasterService from "./services/GameMasterService";
 
-async function onMount() {
-    await GetGameMasters();
-}
+  $: gameMasters = GetGameMasters() ?? [];
 
-async function GetGameMasters() {
-    return await fetch('https://localhost:5001/api/GameMasters')
-        .then((response) => response.json())
-        .then((data) => gameMasters = data);
-}
+  const gameMasterService = new GameMasterService();
 
-function deleteGameMaster(e) {
+  async function onMount() {
+    await gameMasterService.GetAll();
+  }
+
+  async function GetGameMasters() {
+    return await gameMasterService.GetAll()
+      .then((response) => response.json())
+      .then((data) => (gameMasters = data));
+  }
+
+  async function deleteGameMaster(e) {
     const itemId = e.detail;
-    fetch(`https://localhost:5001/api/GameMasters/${itemId}`, {
-        method: 'Delete'
-    }).then(() => gameMasters = gameMasters.filter((item) => item.id !== itemId));
-}
+    await gameMasterService.Remove(itemId)
+      .then(
+        () => (gameMasters = gameMasters.filter((item) => item.id !== itemId))
+      );
+  }
 
-function createGameMaster(e) {
+  async function createGameMaster(e) {
     const gm = new GameMaster();
     gm.name = e.detail;
-    fetch(`https://localhost:5001/api/GameMasters`, {
-        method: 'Post',
-        body: JSON.stringify(gm),
-        headers: {
-            "content-type": "application/json",
-        },
-    })
-    .then((response) => response.json())
-    .then(() => GetGameMasters());
-}
+    await gameMasterService
+      .Create(gm)
+      .then((response) => response.json())
+      .then(() => GetGameMasters());
+  }
 </script>
 
 <main>
-    <GameMasterForm on:create-gamemaster={createGameMaster} />
-    <GameMasterList {gameMasters} on:delete-gamemaster={deleteGameMaster}/>
+  <GameMasterForm on:create-gamemaster={createGameMaster} />
+  <GameMasterList {gameMasters} on:delete-gamemaster={deleteGameMaster} />
 </main>

@@ -1,36 +1,77 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
-    import Card from './Card.svelte';
-    import type IGameMaster from '../models/GameMaster';
-    import GameMasterList from './GameMasterList.svelte'
+import { createEventDispatcher } from 'svelte';
+import Card from './Card.svelte';
+import type IGameMaster from '../models/GameMaster';
+import GameMaster from '../models/GameMaster';
+import GameMasterService from '../services/GameMasterService';
 
-    const dispatch = createEventDispatcher();
-    export let gameMaster: IGameMaster;
+const dispatch = createEventDispatcher();
+const gameMasterService = new GameMasterService();
+export let gameMaster: IGameMaster;
+let editedGameMaster: IGameMaster;
+let name: string;
+let editing = false;
 
-    function handleDelete(itemId: number) {
-        dispatch('delete-gamemaster', itemId);
-    }
+function handleDelete(itemId: number) {
+    dispatch('delete-gamemaster', itemId);
+}
+
+function handleEdit(itemId: number) {
+    editing = true;
+    editedGameMaster = new GameMaster();
+    editedGameMaster.id = itemId;
+}
+
+async function saveChanges(gm: IGameMaster) {
+    editedGameMaster.name = name;
+    await gameMasterService.Edit(gm.id, gm)
+        .then(() => dispatch('updated-gamemaster', gm));
+    editing = !editing;
+    gameMaster = gm;
+}
 </script>
 
 <Card>
-    <div class="id-display">
-        {gameMaster.id}
-    </div>
+  <div class="id-display">
+    {gameMaster.id}
+  </div>
+  {#if !editing}
     <div class="name-display">
-        {gameMaster.name}
+      {gameMaster.name}
     </div>
-    <button class="delete" on:click={() => handleDelete(gameMaster.id)}>Delete</button>
+  {:else}
+    <div>
+      <input type="text" bind:value={name} />
+      <button on:click={() => saveChanges(editedGameMaster)}
+        >Save changes</button
+      >
+    </div>
+  {/if}
+  <button class="delete" on:click={() => handleDelete(gameMaster.id)}
+    >Delete</button
+  >
+  <button class="edit" on:click={() => handleEdit(gameMaster.id)}>Edit</button>
 </Card>
 
 <style>
-    .delete {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      color: red;
-      font-weight: bolder;
-    }
-  </style>
+  .delete {
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: red;
+    font-weight: bolder;
+    float: right;
+  }
+  .edit {
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: green;
+    font-weight: bolder;
+    float: right;
+  }
+</style>
