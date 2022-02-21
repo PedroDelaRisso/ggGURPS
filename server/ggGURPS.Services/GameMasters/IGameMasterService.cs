@@ -5,7 +5,7 @@ public interface IGameMasterService
 {
     Task<List<GetGameMastersDTO>> GetAll();
     Task<GetGameMasterByIdDTO> GetById(long id);
-    Task Create(PostGameMasterDTO gameMasterDTO);
+    Task<GameMaster> Create(PostGameMasterDTO gameMasterDTO);
 
     Task Update(PutGameMasterDTO gameMasterDTO);
     Task Delete(long id);

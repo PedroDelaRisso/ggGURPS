@@ -12,12 +12,13 @@ public class GameMastersService : IGameMasterService
         _context = context;
     }
 
-    public async Task Create(PostGameMasterDTO gameMasterDTO)
+    public async Task<GameMaster> Create(PostGameMasterDTO gameMasterDTO)
     {
         var gameMaster = new GameMaster(gameMasterDTO.Id, gameMasterDTO.Name);
         _context.GameMasters.Add(gameMaster);
 
         await Save();
+        return gameMaster;
     }
 
     public async Task<List<GetGameMastersDTO>> GetAll()

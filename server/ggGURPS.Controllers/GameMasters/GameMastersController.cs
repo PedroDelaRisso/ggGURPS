@@ -14,9 +14,7 @@ public class GameMastersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] PostGameMasterDTO gameMasterDTO)
     {
-        await _gameMasterService.Create(gameMasterDTO);
-
-        return Ok("Game Master saved successfully!");
+        return Ok(await _gameMasterService.Create(gameMasterDTO));
     }
 
     [HttpGet]
