@@ -6,7 +6,9 @@ Welcome to ggGURPS. A WIP web app to facilitate GURPS campaigns.
 
 This is being done as a side personal passion project as a means to study the stack used on my job.
 
-ggGURPS currently uses .NET 5 as the backend framework and Svelte framework.
+
+ggGURPS currently uses .NET 5 as the backend framework and Svelte for the frontend.
+
 
 GURPS is an RPG system published by Steve Jackson Games. Its name means Generic Universal Role Playing System. It's a very complex and complete RPG system.
 
@@ -36,10 +38,13 @@ cd server
 ```
 Then execute these commands in this order:
 ```bash
+dotnet tool install --global dotnet-ef
 dotnet ef database update
 dotnet run
 ```
-Or add a watch in between the words so that whenever you save a .cs file, the web API page will reload automatically.
+The first command installs Entity Framework. The second creates the database. The third runs the project.
+
+You can add a watch in between "dotnet" and "run" so that whenever you save a .cs file, the project will run again and the web API page will reload.
 ```bash
 dotnet watch run
 ```
