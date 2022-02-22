@@ -1,10 +1,10 @@
 <script lang="ts">
 import { getAllContexts, onMount } from "svelte";
 import GameMasterItem from "./GameMasterItem.svelte";
-import GameMasterService from "../services/GameMasterService";
+import GameMasterService from "../../services/GameMasterService";
 import GameMasterForm from "./GameMasterForm.svelte";
-import IGameMaster from "../models/GameMaster";
-import GameMaster from "../models/GameMaster";
+import IGameMaster from "../../models/GameMaster";
+import GameMaster from "../../models/GameMaster";
 
 const gameMasterService = new GameMasterService();
 

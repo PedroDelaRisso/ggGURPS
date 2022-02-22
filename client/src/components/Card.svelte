@@ -6,8 +6,8 @@
 
 <style>
 .card {
-    background-color: #fff;
-    color: #333;
+    background-color: #333;
+    color: #fff;
     border-radius: 15px;
     padding: 40px 50px;
     margin: 20px 0;
