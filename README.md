@@ -39,7 +39,7 @@ Navigate to the ``server`` folder inside the repository.
 There are two very important files: ``appsettings.json`` and ``appsettings.Development.json``.
 Inside these files, take a look at the ``ConnectionStrings`` object and change its ``Default`` property to suite your environment.
 
-```ps
+```bash
 # you can press CTRL+' to open the terminal inside Visual Studio Code
 # run this command to navigate to the server folder
 cd server
@@ -57,20 +57,20 @@ dotnet run
 ```
 
 You can add a watch in between "dotnet" and "run" so that whenever you save a .cs file, the project will run again and the web API page will reload.
-```ps
+```bash
 dotnet watch run
 ```
 
 How to run the client:
 
 Navigate to the ``client`` folder
-```ps
+```bash
 # open another terminal, you can use CTRL+SHIFT+' to do so
 cd client
 ```
 
 Then execute the following commands:
-```ps
+```bash
 # to install dependencies
 npm install
 
