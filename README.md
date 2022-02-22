@@ -26,26 +26,55 @@ This list will be updated regularly as new ideas arrive.
 
 How to develop (so far):
 - [.NET 5 SDK](https://dotnet.microsoft.com).
+- [NodeJS](https://nodejs.org).
 - An SQL Server. I use the Basic installation of [SQL Express](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads). If you want to use anything else, make sure to edit the connections strings in both ``appsettings.json`` and ``appsettings.Development.json``.
 - Any means of managing the database. I use [SSMS](https://docs.microsoft.com/pt-br/sql/ssms/download-sql-server-management-studio-ssms?redirectedfrom=MSDN&view=sql-server-ver15).
 - A code editor. I use [Visual Studio Code](https://code.visualstudio.com). Make sure to look for the C# extension and install it.
 - Any terminal to run the commands. I use the terminal inside Visual Studio Code.
 
-How to run:
-Navigate to the server folder inside the repository.
-```bash
+How to run the server:
+
+Navigate to the ``server`` folder inside the repository.
+
+There are two very important files: ``appsettings.json`` and ``appsettings.Development.json``.
+Inside these files, take a look at the ``ConnectionStrings`` object and change its ``Default`` property to suite your environment.
+
+```ps
+# you can press CTRL+' to open the terminal inside Visual Studio Code
+# run this command to navigate to the server folder
 cd server
-```
-Then execute these commands in this order:
-```bash
+
+# then execute these commands in this order:
+
+# install EntityFramework for database management:
 dotnet tool install --global dotnet-ef
-dotnet ef database update
+
+# then execute this to run the project:
 dotnet run
+
+# the database will be created automatically
+
 ```
-The first command installs Entity Framework. The second creates the database. The third runs the project.
 
 You can add a watch in between "dotnet" and "run" so that whenever you save a .cs file, the project will run again and the web API page will reload.
-```bash
+```ps
 dotnet watch run
+```
+
+How to run the client:
+
+Navigate to the ``client`` folder
+```ps
+# open another terminal, you can use CTRL+SHIFT+' to do so
+cd client
+```
+
+Then execute the following commands:
+```ps
+# to install dependencies
+npm install
+
+# wait for the dependencies to be installed and then run:
+npm run dev
 ```
 And you should be all set!
