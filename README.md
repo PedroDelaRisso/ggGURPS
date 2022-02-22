@@ -49,7 +49,7 @@ cd server
 # install EntityFramework for database management:
 dotnet tool install --global dotnet-ef
 
-# then execute this to run the project:
+# run the project:
 dotnet run
 
 # the database will be created automatically
