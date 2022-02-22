@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class PlayerController : ControllerBase
 {
     private readonly IPlayerService _playerService;

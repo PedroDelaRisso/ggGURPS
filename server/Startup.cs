@@ -15,10 +15,21 @@ public class Startup
 
     public IConfiguration Configuration { get; }
 
+
+    private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: MyAllowSpecificOrigins,
+                              builder =>
+                              {
+                                builder.WithOrigins("http://localhost:8080")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                              });
+        });
         services.AddControllers();
         services.AddSwaggerGen(c =>
         {
@@ -37,6 +48,11 @@ public class Startup
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+        {
+            var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            context.Database.Migrate();
+        }
         if(env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -56,6 +72,8 @@ public class Startup
         app.UseAuthorization();
 
         app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+
+        app.UseCors(MyAllowSpecificOrigins);
 
         app.UseEndpoints(endpoints =>
         {
