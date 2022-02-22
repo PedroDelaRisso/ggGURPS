@@ -14,7 +14,11 @@ export default class Api {
   }
 
   public async getAll() {
-    return await fetch(this._fullUrl);
+    let responseData;
+    await fetch(this._fullUrl, {method: 'GET'})
+      .then((response) => response.json())
+      .then((data) => responseData = data);
+    return responseData;
   }
 
   public async get(id: number) {
@@ -22,6 +26,7 @@ export default class Api {
   }
 
   public async update(id: number, payload: any = {}) {
+    console.log(payload);
     return await fetch(`${this._fullUrl}/${id}`, {
       method: 'PUT',
       headers: this._headers,

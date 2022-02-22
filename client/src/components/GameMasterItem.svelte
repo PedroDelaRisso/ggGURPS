@@ -3,10 +3,8 @@ import { createEventDispatcher } from 'svelte';
 import Card from './Card.svelte';
 import type IGameMaster from '../models/GameMaster';
 import GameMaster from '../models/GameMaster';
-import GameMasterService from '../services/GameMasterService';
 
 const dispatch = createEventDispatcher();
-const gameMasterService = new GameMasterService();
 export let gameMaster: IGameMaster;
 let editedGameMaster: IGameMaster;
 let name: string;
@@ -24,10 +22,8 @@ function handleEdit(itemId: number) {
 
 async function saveChanges(gm: IGameMaster) {
     editedGameMaster.name = name;
-    await gameMasterService.Edit(gm.id, gm)
-        .then(() => dispatch('updated-gamemaster', gm));
+    dispatch('edit-gamemaster', editedGameMaster);
     editing = !editing;
-    gameMaster = gm;
 }
 </script>
 
