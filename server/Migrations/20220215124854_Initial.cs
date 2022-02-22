@@ -2,7 +2,7 @@
 
 namespace ggGURPS.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,6 @@ namespace ggGURPS.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Price = table.Column<int>(type: "int", nullable: false),
-                    AffectedAttribute = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -33,33 +32,6 @@ namespace ggGURPS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GameMasters", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Items",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ItemType = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    Weight = table.Column<double>(type: "float", nullable: false),
-                    DamageReduction = table.Column<int>(type: "int", nullable: false),
-                    SwingDamageDice = table.Column<int>(type: "int", nullable: false),
-                    SwingDamageModifier = table.Column<int>(type: "int", nullable: false),
-                    ThrustDamageDice = table.Column<int>(type: "int", nullable: false),
-                    ThrustDamageModifier = table.Column<int>(type: "int", nullable: false),
-                    Recoil = table.Column<int>(type: "int", nullable: false),
-                    Range = table.Column<int>(type: "int", nullable: false),
-                    RateOfFire = table.Column<int>(type: "int", nullable: false),
-                    DamageDice = table.Column<int>(type: "int", nullable: false),
-                    DamageModifier = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,6 +108,7 @@ namespace ggGURPS.Migrations
                     Perception = table.Column<int>(type: "int", nullable: false),
                     Npc = table.Column<bool>(type: "bit", nullable: false),
                     PlayerId = table.Column<long>(type: "bigint", nullable: true),
+                    GameMasterId = table.Column<long>(type: "bigint", nullable: true),
                     CampaignId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -148,6 +121,12 @@ namespace ggGURPS.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Characters_GameMasters_GameMasterId",
+                        column: x => x.GameMasterId,
+                        principalTable: "GameMasters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Characters_Players_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Players",
@@ -156,126 +135,25 @@ namespace ggGURPS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TableRelations_PlayersToCampaigns",
-                columns: table => new
-                {
-                    CampaignsId = table.Column<long>(type: "bigint", nullable: false),
-                    PlayersId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TableRelations_PlayersToCampaigns", x => new { x.CampaignsId, x.PlayersId });
-                    table.ForeignKey(
-                        name: "FK_TableRelations_PlayersToCampaigns_Campaigns_CampaignsId",
-                        column: x => x.CampaignsId,
-                        principalTable: "Campaigns",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TableRelations_PlayersToCampaigns_Players_PlayersId",
-                        column: x => x.PlayersId,
-                        principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Rolls",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NumberOfDice = table.Column<long>(type: "bigint", nullable: false),
-                    Modifier = table.Column<int>(type: "int", nullable: false),
-                    RollResult = table.Column<int>(type: "int", nullable: false),
-                    FinalResult = table.Column<int>(type: "int", nullable: false),
-                    Index = table.Column<int>(type: "int", nullable: false),
-                    Success = table.Column<bool>(type: "bit", nullable: false),
-                    CharacterId = table.Column<long>(type: "bigint", nullable: true),
-                    GameMasterId = table.Column<long>(type: "bigint", nullable: true),
-                    AdvantageId = table.Column<long>(type: "bigint", nullable: true),
-                    SkillId = table.Column<long>(type: "bigint", nullable: true),
-                    ItemId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rolls", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Rolls_Advantages_AdvantageId",
-                        column: x => x.AdvantageId,
-                        principalTable: "Advantages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Rolls_Characters_CharacterId",
-                        column: x => x.CharacterId,
-                        principalTable: "Characters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Rolls_GameMasters_GameMasterId",
-                        column: x => x.GameMasterId,
-                        principalTable: "GameMasters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Rolls_Items_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Rolls_Skills_SkillId",
-                        column: x => x.SkillId,
-                        principalTable: "Skills",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TableRelations_CharactersToAdvantages",
                 columns: table => new
                 {
-                    AdvantagesId = table.Column<long>(type: "bigint", nullable: false),
-                    CharactersId = table.Column<long>(type: "bigint", nullable: false)
+                    CharacterId = table.Column<long>(type: "bigint", nullable: false),
+                    AdvantageId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TableRelations_CharactersToAdvantages", x => new { x.AdvantagesId, x.CharactersId });
+                    table.PrimaryKey("PK_TableRelations_CharactersToAdvantages", x => new { x.CharacterId, x.AdvantageId });
                     table.ForeignKey(
-                        name: "FK_TableRelations_CharactersToAdvantages_Advantages_AdvantagesId",
-                        column: x => x.AdvantagesId,
+                        name: "FK_TableRelations_CharactersToAdvantages_Advantages_AdvantageId",
+                        column: x => x.AdvantageId,
                         principalTable: "Advantages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TableRelations_CharactersToAdvantages_Characters_CharactersId",
-                        column: x => x.CharactersId,
+                        name: "FK_TableRelations_CharactersToAdvantages_Characters_CharacterId",
+                        column: x => x.CharacterId,
                         principalTable: "Characters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TableRelations_CharactersToItems",
-                columns: table => new
-                {
-                    CharactersId = table.Column<long>(type: "bigint", nullable: false),
-                    ItemsId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TableRelations_CharactersToItems", x => new { x.CharactersId, x.ItemsId });
-                    table.ForeignKey(
-                        name: "FK_TableRelations_CharactersToItems_Characters_CharactersId",
-                        column: x => x.CharactersId,
-                        principalTable: "Characters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TableRelations_CharactersToItems_Items_ItemsId",
-                        column: x => x.ItemsId,
-                        principalTable: "Items",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -315,78 +193,36 @@ namespace ggGURPS.Migrations
                 column: "CampaignId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Characters_GameMasterId",
+                table: "Characters",
+                column: "GameMasterId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Characters_PlayerId",
                 table: "Characters",
                 column: "PlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rolls_AdvantageId",
-                table: "Rolls",
-                column: "AdvantageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rolls_CharacterId",
-                table: "Rolls",
-                column: "CharacterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rolls_GameMasterId",
-                table: "Rolls",
-                column: "GameMasterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rolls_ItemId",
-                table: "Rolls",
-                column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rolls_SkillId",
-                table: "Rolls",
-                column: "SkillId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TableRelations_CharactersToAdvantages_CharactersId",
+                name: "IX_TableRelations_CharactersToAdvantages_AdvantageId",
                 table: "TableRelations_CharactersToAdvantages",
-                column: "CharactersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TableRelations_CharactersToItems_ItemsId",
-                table: "TableRelations_CharactersToItems",
-                column: "ItemsId");
+                column: "AdvantageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TableRelations_CharactersToSkills_SkillsId",
                 table: "TableRelations_CharactersToSkills",
                 column: "SkillsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TableRelations_PlayersToCampaigns_PlayersId",
-                table: "TableRelations_PlayersToCampaigns",
-                column: "PlayersId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Rolls");
-
-            migrationBuilder.DropTable(
                 name: "TableRelations_CharactersToAdvantages");
-
-            migrationBuilder.DropTable(
-                name: "TableRelations_CharactersToItems");
 
             migrationBuilder.DropTable(
                 name: "TableRelations_CharactersToSkills");
 
             migrationBuilder.DropTable(
-                name: "TableRelations_PlayersToCampaigns");
-
-            migrationBuilder.DropTable(
                 name: "Advantages");
-
-            migrationBuilder.DropTable(
-                name: "Items");
 
             migrationBuilder.DropTable(
                 name: "Characters");
