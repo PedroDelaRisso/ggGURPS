@@ -37,7 +37,7 @@ How to run the server:
 Navigate to the ``server`` folder inside the repository.
 
 There are two very important files: ``appsettings.json`` and ``appsettings.Development.json``.
-Inside these files, take a look at the ``ConnectionStrings`` object and change its ``Default`` property to suite your environment.
+Inside these files, take a look at the ``ConnectionStrings`` object and change its ``Default`` property to whatever you need it to be.
 
 ```bash
 # you can press CTRL+' to open the terminal inside Visual Studio Code
@@ -54,18 +54,15 @@ dotnet run
 
 # the database will be created automatically
 
-```
-
-You can add a watch in between "dotnet" and "run" so that whenever you save a .cs file, the project will run again and the web API page will reload.
-```bash
+# or you can add a watch in between "dotnet" and "run" so that whenever you save a .cs file, the project will run again and the web API page will reload.
 dotnet watch run
 ```
 
 How to run the client:
 
-Navigate to the ``client`` folder
+Navigate to the ``client`` folder. Inside it, go to ``src/models/Api.ts``. Inside this file scroll down to the ``constructor`` method and change the address of the API to yours. Default will be what's in there.
 ```bash
-# open another terminal, you can use CTRL+SHIFT+' to do so
+# open another terminal, you can use CTRL+SHIFT+' to do so and navigate to the client folder
 cd client
 ```
 
