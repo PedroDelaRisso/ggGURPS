@@ -62,7 +62,7 @@ public class GameMastersService : IGameMasterService
 
     public async Task Update(PutGameMasterDTO gameMasterDTO)
     {
-        var gameMaster = await _context.GameMasters.FirstOrDefaultAsync();
+        var gameMaster = await _context.GameMasters.Where(gm => gm.Id == gameMasterDTO.Id).FirstOrDefaultAsync();
         if(gameMaster == null)
             throw new KeyNotFoundException();
         gameMaster.Id = gameMasterDTO.Id;
