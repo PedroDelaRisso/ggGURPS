@@ -26,7 +26,6 @@ export default class Api {
   }
 
   public async update(id: number, payload: any = {}) {
-    console.log(payload);
     return await fetch(`${this._fullUrl}/${id}`, {
       method: 'PUT',
       headers: this._headers,
