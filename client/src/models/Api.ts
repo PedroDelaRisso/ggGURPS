@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default class Api {
   private _fullUrl: string;
 
@@ -6,38 +8,43 @@ export default class Api {
   }
 
   public async post(payload: any = {}) {
-    return await fetch(this._fullUrl, {
-      method: "POST",
-      headers: this._headers,
-      body: JSON.stringify(payload),
-    });
+    return await axios.post(this._fullUrl, payload)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => console.error(error));
   }
 
   public async getAll() {
-    let responseData;
-    await fetch(this._fullUrl, {method: 'GET'})
-      .then((response) => response.json())
-      .then((data) => responseData = data);
-    return responseData;
+    return await axios.get(this._fullUrl)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => console.error(error));
   }
 
   public async get(id: number) {
-    return await fetch(`${this._fullUrl}/${id}`);
+    return await axios.get(`${this._fullUrl}/${id}`)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => console.error(error));
   }
 
   public async update(id: number, payload: any = {}) {
-    return await fetch(`${this._fullUrl}/${id}`, {
-      method: 'PUT',
-      headers: this._headers,
-      body: JSON.stringify(payload),
-    });
+    return await axios.put(`${this._fullUrl}/${id}`, payload)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => console.error(error));
   }
 
   public async delete(id: number) {
-    return await fetch(`${this._fullUrl}/${id}`, {
-      method: 'DELETE',
-      headers: this._headers,
-    });
+    return await axios.delete(`${this._fullUrl}/${id}`)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => console.error(error));
   }
 
   constructor(url: string) {
