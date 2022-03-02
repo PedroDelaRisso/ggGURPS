@@ -7,9 +7,16 @@ const dispatch = createEventDispatcher();
 
 function createGameMaster() {
     dispatch('create-gamemaster', name);
+    name = '';
 }
 </script>
 
-<input type="text" bind:value={name} />
+<input type="text" placeholder="Insert the Game Master's name" bind:value={name} />
 
 <button on:click={() => createGameMaster()}>Create GameMaster</button>
+
+<style>
+input {
+    width: 100%;
+}
+</style>

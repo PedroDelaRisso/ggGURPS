@@ -10,17 +10,17 @@
   let name: string;
   let editing = false;
 
-  function handleDelete(itemId: number) {
-    dispatch("delete-gamemaster", itemId);
+  function handleDelete() {
+    dispatch("delete-gamemaster", gameMaster.id);
   }
 
-  function handleEdit(itemId: number) {
+  function handleEdit() {
     editing = true;
-    editedGameMaster = new GameMaster();
-    editedGameMaster.id = itemId;
+    editedGameMaster = gameMaster
+    name = gameMaster.name;
   }
 
-  async function saveChanges(gm: IGameMaster) {
+  async function saveChanges() {
     editedGameMaster.name = name;
     dispatch("edit-gamemaster", editedGameMaster);
     editing = !editing;
@@ -31,22 +31,24 @@
   {#if !editing}
     <div class="name-display">
       {gameMaster.name}
+      <br>
+      ID: {gameMaster.id}
     </div>
   {:else}
     <div>
-      <input type="text" bind:value={name} />
-      <button on:click={() => saveChanges(editedGameMaster)}>
+      <input type="text" placeholder="Game Master name" bind:value={name} />
+      <button on:click={saveChanges}>
         Save changes
       </button>
     </div>
   {/if}
-  <button class="delete" on:click={() => handleDelete(gameMaster.id)}
+  <button class="delete" on:click={handleDelete}
     >Delete</button
   >
-  <button class="edit" on:click={() => handleEdit(gameMaster.id)}>Edit</button>
+  <button class="edit" on:click={handleEdit}>Edit</button>
 </Card>
 
-<style>
+<style scoped>
   .delete {
     top: 10px;
     right: 20px;
@@ -57,6 +59,7 @@
     font-weight: bolder;
     float: right;
   }
+
   .edit {
     top: 10px;
     right: 20px;
@@ -66,5 +69,11 @@
     color: green;
     font-weight: bolder;
     float: right;
+  }
+
+  .name-display {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>

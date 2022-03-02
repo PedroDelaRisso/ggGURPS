@@ -5,7 +5,7 @@ import Api from "./_Api";
 export default class GameMasterService {
   private static readonly _url = "GameMasters";
 
-  public async getAll(payload: any = {}) {
+  public static async getAll(payload: any = {}) {
     return new Promise<Array<IGameMaster>>((resolve, reject) => {
       Api.get(GameMasterService._url, "", { params: payload })
         .then((response: AxiosResponse) => {
@@ -17,7 +17,7 @@ export default class GameMasterService {
     });
   }
 
-  public async create(payload: IGameMaster) {
+  public static async create(payload: IGameMaster) {
     return new Promise<IGameMaster>((resolve, reject) => {
       Api.post(GameMasterService._url, payload)
         .then((response: AxiosResponse) => {
@@ -29,7 +29,7 @@ export default class GameMasterService {
     });
   }
 
-  public async update(id: string, payload: IGameMaster) {
+  public static async update(id: string, payload: IGameMaster) {
     return new Promise<IGameMaster>((resolve, reject) => {
       Api.put(GameMasterService._url, id, payload)
         .then((response: AxiosResponse) => {
@@ -41,7 +41,7 @@ export default class GameMasterService {
     });
   }
 
-  public async remove(id: string) {
+  public static async remove(id: string) {
     return new Promise<any>((resolve, reject) => {
       Api.delete(GameMasterService._url, id)
         .then((response: AxiosResponse) => {
