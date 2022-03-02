@@ -12,5 +12,6 @@
     padding: 40px 50px;
     margin: 20px 0;
     position: relative;
+    max-width: 500px;
 }
 </style>
