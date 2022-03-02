@@ -11,7 +11,7 @@
   let editing = false;
 
   function handleDelete() {
-    dispatch("delete-Player", player);
+    dispatch("delete-Player", player.id);
   }
 
   function handleEdit() {
