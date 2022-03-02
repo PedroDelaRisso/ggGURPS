@@ -1,47 +1,53 @@
 <script lang="ts">
-import { getAllContexts, onMount } from "svelte";
-import GameMasterItem from "./GameMasterItem.svelte";
-import GameMasterService from "../../services/GameMasterService";
-import GameMasterForm from "./GameMasterForm.svelte";
-import IGameMaster from "../../models/GameMaster";
-import GameMaster from "../../models/GameMaster";
+  import { onMount } from "svelte";
+  import GameMasterItem from "./GameMasterItem.svelte";
+  import GameMasterService from "../../services/GameMasterService";
+  import GameMasterForm from "./GameMasterForm.svelte";
+  import type IGameMaster from "../../models/GameMaster";
+  import GameMaster from "../../models/GameMaster";
 
-const gameMasterService = new GameMasterService();
+  const gameMasterService = new GameMasterService();
 
-let gameMastersInDb = [];
-async function getAllGameMasters() {
-    gameMastersInDb = await gameMasterService.GetAll();
-}
-onMount(async () => {
+  let gameMastersInDb = Array<IGameMaster>();
+
+  async function getAllGameMasters() {
+    gameMastersInDb = await gameMasterService.getAll().catch(() => []);
+  }
+
+  onMount(async () => {
     await getAllGameMasters();
-});
+  });
 
-async function deleteGameMaster(e) {
+  function deleteGameMaster(e: CustomEvent) {
     const id = e.detail;
-    await gameMasterService.Remove(id).then(() => getAllGameMasters());
-}
+    gameMasterService.remove(id as string)
+      .then(() => getAllGameMasters());
+  }
 
-async function editGameMaster(e) {
+  function editGameMaster(e: CustomEvent) {
     const gameMaster = e.detail;
-    await gameMasterService.Edit(gameMaster.id, gameMaster).then(() => getAllGameMasters());
-}
+    gameMasterService.update(gameMaster.id as string, gameMaster)
+      .then(() => getAllGameMasters());
+  }
 
-
-async function createGameMaster(e) {
+  function createGameMaster(e: CustomEvent) {
     const gameMaster = new GameMaster();
     gameMaster.name = e.detail;
-    await gameMasterService.Create(gameMaster).then(() => getAllGameMasters());
-}
-$: gameMasters = gameMastersInDb;
+    gameMasterService.create(gameMaster)
+      .then(() => getAllGameMasters());
+  }
 </script>
-<GameMasterForm on:create-gamemaster={createGameMaster}/>
+
+<GameMasterForm on:create-gamemaster={createGameMaster} />
 <h1>GameMaster List</h1>
 {#if gameMastersInDb?.length}
-    {#each gameMastersInDb as gameMaster (gameMaster.id)}
-        <GameMasterItem
-            {gameMaster}
-            on:delete-gamemaster={deleteGameMaster}
-            on:edit-gamemaster={editGameMaster}
-        />
-    {/each}
+  {#each gameMastersInDb as gameMaster (gameMaster.id)}
+    <GameMasterItem
+      {gameMaster}
+      on:delete-gamemaster={deleteGameMaster}
+      on:edit-gamemaster={editGameMaster}
+    />
+  {/each}
+{:else}
+  <span>There are no Game Masters.</span>
 {/if}

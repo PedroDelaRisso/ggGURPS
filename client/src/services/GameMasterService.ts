@@ -1,24 +1,55 @@
-import Api from '../models/Api';
-import type IGameMaster from '../models/GameMaster';
+import type { AxiosError, AxiosResponse } from "axios";
+import type IGameMaster from "../models/GameMaster";
+import Api from "./_Api";
 
 export default class GameMasterService {
-    private _URL = 'GameMasters'
+  private static readonly _url = "GameMasters";
 
-    private api = new Api(this._URL);
+  public async getAll(payload: any = {}) {
+    return new Promise<Array<IGameMaster>>((resolve, reject) => {
+      Api.get(GameMasterService._url, "", { params: payload })
+        .then((response: AxiosResponse) => {
+          resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+          reject(error.response);
+        });
+    });
+  }
 
-    public async Create(gameMaster: IGameMaster) {
-        return await this.api.post(gameMaster);
-    }
+  public async create(payload: IGameMaster) {
+    return new Promise<IGameMaster>((resolve, reject) => {
+      Api.post(GameMasterService._url, payload)
+        .then((response: AxiosResponse) => {
+          resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+          reject(error.response);
+        });
+    });
+  }
 
-    public async GetAll() {
-        return await this.api.getAll();
-    }
+  public async update(id: string, payload: IGameMaster) {
+    return new Promise<IGameMaster>((resolve, reject) => {
+      Api.put(GameMasterService._url, id, payload)
+        .then((response: AxiosResponse) => {
+          resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+          reject(error.response);
+        });
+    });
+  }
 
-    public async Edit(id: number, gamemMaster: IGameMaster) {
-        return await this.api.update(id, gamemMaster);
-    }
-
-    public async Remove(id: number) {
-        return await this.api.delete(id);
-    }
+  public async remove(id: string) {
+    return new Promise<any>((resolve, reject) => {
+      Api.delete(GameMasterService._url, id)
+        .then((response: AxiosResponse) => {
+          resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+          reject(error.response);
+        });
+    });
+  }
 }
