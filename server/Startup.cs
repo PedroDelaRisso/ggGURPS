@@ -1,3 +1,4 @@
+using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -37,12 +38,9 @@ public class Startup
         });
         var connectionString = Configuration.GetConnectionString("Default");
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+        services.AddAutoMapper(typeof(Startup));
 
-        services.AddTransient<IGameMasterService, GameMastersService>();
-        services.AddTransient<IPlayerService, PlayerService>();
-        services.AddTransient<ICampaignService, CampaignsService>();
-        services.AddTransient<ICharacterService, CharacterService>();
-        services.AddTransient<IAdvantageService, AdvantageService>();
+        services.AddTransient<ICharacterManager, CharacterManager>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

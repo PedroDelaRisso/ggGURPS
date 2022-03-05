@@ -1,69 +1,39 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CharactersController : ControllerBase
 {
-    private readonly ICharacterService _characterService;
+    private readonly ICharacterManager _characterManager;
+    private readonly IMapper _mapper;
 
-    public CharactersController(ICharacterService characterService)
+    public CharactersController(ICharacterManager characterManager,
+                                IMapper mapper)
     {
-        _characterService = characterService;
+        _characterManager = characterManager;
+        _mapper = mapper;
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] PostCharacterDTO characterDTO)
     {
-        await _characterService.Create(characterDTO);
-
-        return Ok("Character created successfully!");
+        var character = _mapper.Map<Character>(characterDTO);
+        return Ok(await _characterManager.Create(character));
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Get()
+    [HttpPost("{id}/Skills")]
+    public async Task<IActionResult> AddSkil(int id, [FromBody] PostSkillDTO skillDTO)
     {
-        return Ok(await _characterService.GetAll());
+        var skill = _mapper.Map<Skill>(skillDTO);
+        return Ok(await _characterManager.AddSkill(id, skill));
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(long id)
+    [HttpPost("{id}/Items")]
+    public async Task<IActionResult> AddItem(int id, [FromBody] PostItemDTO itemDTO)
     {
-        return Ok(await _characterService.GetById(id));
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Put(long id, [FromBody] PutCharacterDTO characterDTO)
-    {
-        await _characterService.Update(id, characterDTO);
-        return Ok("Character updated succcessfully.");
-    }
-
-    [HttpPut("{id}/LevelUp/{attribute}")]
-    public async Task<IActionResult> LevelUp(long id, Attributes attribute, int levels)
-    {
-        await _characterService.LevelUp(id, attribute, levels);
-        return Ok("Attribute updated successfully.");
-    }
-
-    [HttpPut("{id}/Points")]
-    public async Task<IActionResult> AddPoints(long id, int points)
-    {
-        await _characterService.AddPoints(id, points);
-        return Ok("Points added succesfully!");
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(long id)
-    {
-        await _characterService.Delete(id);
-        return Ok("Character deleted successfully.");
-    }
-
-    [HttpPut("{characterId}/Advantages/Add/{advantageId}")]
-    public async Task<IActionResult> AddAdvantage(long characterId, long advantageId)
-    {
-        await _characterService.AddAdvantage(characterId, advantageId);
-        return Ok("Advantage added successfully!");
+        var item = _mapper.Map<Item>(itemDTO);
+        return Ok(await _characterManager.AddItem(id, item));
     }
 }
