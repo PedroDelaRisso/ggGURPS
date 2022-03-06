@@ -1,13 +1,13 @@
 import type { AxiosError, AxiosResponse } from "axios";
-import type IGameMaster from "../models/GameMaster";
+import type ICharacter from "../models/Character";
 import Api from "./_Api";
 
-export default class GameMasterService {
-  private static readonly _url = "GameMasters";
+export default class CharacterService {
+  private static readonly _url = "Characters";
 
   public static async getAll(payload: any = {}) {
-    return new Promise<Array<IGameMaster>>((resolve, reject) => {
-      Api.get(GameMasterService._url, "", { params: payload })
+    return new Promise<Array<ICharacter>>((resolve, reject) => {
+      Api.get(CharacterService._url, "", { params: payload })
         .then((response: AxiosResponse) => {
           resolve(response.data);
         })
@@ -17,9 +17,9 @@ export default class GameMasterService {
     });
   }
 
-  public static async create(payload: IGameMaster) {
-    return new Promise<IGameMaster>((resolve, reject) => {
-      Api.post(GameMasterService._url, payload)
+  public static async create(payload: ICharacter) {
+    return new Promise<ICharacter>((resolve, reject) => {
+      Api.post(CharacterService._url, payload)
         .then((response: AxiosResponse) => {
           resolve(response.data);
         })
@@ -29,9 +29,9 @@ export default class GameMasterService {
     });
   }
 
-  public static async update(id: string, payload: IGameMaster) {
-    return new Promise<IGameMaster>((resolve, reject) => {
-      Api.put(GameMasterService._url, id, payload)
+  public static async update(id: string, payload: ICharacter) {
+    return new Promise<ICharacter>((resolve, reject) => {
+      Api.put(CharacterService._url, id, payload)
         .then((response: AxiosResponse) => {
           resolve(response.data);
         })
@@ -43,7 +43,7 @@ export default class GameMasterService {
 
   public static async remove(id: string) {
     return new Promise<any>((resolve, reject) => {
-      Api.delete(GameMasterService._url, id)
+      Api.delete(CharacterService._url, id)
         .then((response: AxiosResponse) => {
           resolve(response.data);
         })

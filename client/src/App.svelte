@@ -1,11 +1,7 @@
 <script lang="ts">
-import CampaignList from "./components/Campaign/CampaignList.svelte";
-import GameMasterList from "./components/GameMasters/GameMasterList.svelte";
-import PlayerList from "./components/Players/PlayerList.svelte";
+import CharacterForm from './components/Characters/CharacterForm.svelte'
 </script>
 
 <main>
-  <GameMasterList />
-  <PlayerList />
-  <CampaignList />
+  <CharacterForm />
 </main>
