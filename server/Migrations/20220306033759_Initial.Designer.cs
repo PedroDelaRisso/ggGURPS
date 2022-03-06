@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ggGURPS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220305234014_Initial")]
+    [Migration("20220306033759_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace ggGURPS.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Attributes", b =>
+            modelBuilder.Entity("Character", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,6 +51,9 @@ namespace ggGURPS.Migrations
                     b.Property<int>("Magery")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Perception")
                         .HasColumnType("int");
 
@@ -61,31 +64,6 @@ namespace ggGURPS.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.ToTable("Attributes");
-                });
-
-            modelBuilder.Entity("Character", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AttributesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InventoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AttributesId");
-
-                    b.HasIndex("InventoryId");
 
                     b.ToTable("Characters");
                 });
@@ -100,7 +78,7 @@ namespace ggGURPS.Migrations
                     b.Property<int>("ChallengeRating")
                         .HasColumnType("int");
 
-                    b.Property<int>("CharacterId")
+                    b.Property<int?>("CharacterId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -119,18 +97,6 @@ namespace ggGURPS.Migrations
                     b.ToTable("CustomRolls");
                 });
 
-            modelBuilder.Entity("Inventory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Inventories");
-                });
-
             modelBuilder.Entity("Item", b =>
                 {
                     b.Property<int>("Id")
@@ -138,38 +104,13 @@ namespace ggGURPS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("InventoryId")
+                    b.Property<int>("Accuracy")
                         .HasColumnType("int");
-
-                    b.Property<int>("ItemStatsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InventoryId");
-
-                    b.HasIndex("ItemStatsId");
-
-                    b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("ItemStats", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ArmorDivisor")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CharacterId")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageDice")
@@ -178,8 +119,14 @@ namespace ggGURPS.Migrations
                     b.Property<int>("DamageType")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float>("Modifier")
                         .HasColumnType("real");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Range")
                         .HasColumnType("int");
@@ -196,11 +143,16 @@ namespace ggGURPS.Migrations
                     b.Property<int?>("SkillId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CharacterId");
 
                     b.HasIndex("SkillId");
 
-                    b.ToTable("ItemStats");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("Skill", b =>
@@ -239,7 +191,7 @@ namespace ggGURPS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CharacterId")
+                    b.Property<int?>("CharacterId")
                         .HasColumnType("int");
 
                     b.Property<int>("CostToCast")
@@ -270,57 +222,19 @@ namespace ggGURPS.Migrations
                     b.ToTable("Spells");
                 });
 
-            modelBuilder.Entity("Character", b =>
-                {
-                    b.HasOne("Attributes", "Attributes")
-                        .WithMany()
-                        .HasForeignKey("AttributesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Inventory", "Inventory")
-                        .WithMany()
-                        .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Attributes");
-
-                    b.Navigation("Inventory");
-                });
-
             modelBuilder.Entity("CustomRoll", b =>
                 {
-                    b.HasOne("Character", "Character")
+                    b.HasOne("Character", null)
                         .WithMany("CustomRolls")
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character");
+                        .HasForeignKey("CharacterId");
                 });
 
             modelBuilder.Entity("Item", b =>
                 {
-                    b.HasOne("Inventory", "Inventory")
+                    b.HasOne("Character", null)
                         .WithMany("Items")
-                        .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CharacterId");
 
-                    b.HasOne("ItemStats", "ItemStats")
-                        .WithMany()
-                        .HasForeignKey("ItemStatsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Inventory");
-
-                    b.Navigation("ItemStats");
-                });
-
-            modelBuilder.Entity("ItemStats", b =>
-                {
                     b.HasOne("Skill", "Skill")
                         .WithMany()
                         .HasForeignKey("SkillId");
@@ -337,27 +251,20 @@ namespace ggGURPS.Migrations
 
             modelBuilder.Entity("Spell", b =>
                 {
-                    b.HasOne("Character", "Character")
+                    b.HasOne("Character", null)
                         .WithMany("Spells")
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character");
+                        .HasForeignKey("CharacterId");
                 });
 
             modelBuilder.Entity("Character", b =>
                 {
                     b.Navigation("CustomRolls");
 
+                    b.Navigation("Items");
+
                     b.Navigation("Skills");
 
                     b.Navigation("Spells");
-                });
-
-            modelBuilder.Entity("Inventory", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

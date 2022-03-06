@@ -14,18 +14,29 @@ public class CharacterManager : ICharacterManager
 
     public async Task<Character> Create(Character character)
     {
+        // character.Inventory = null;
+        // character.Skills = null;
+        // character.Spells = null;
         _context.Characters.Add(character);
         await _context.SaveChangesAsync();
         return character;
     }
 
+    public async Task<Character>  GetById(int id)
+    {
+        return await _context.Characters.Where(c => c.Id == id)
+            .Include(c => c.Skills)
+            .Include(c => c.Items)
+            .Include(c => c.CustomRolls)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<Item> AddItem(int characterId, Item item)
     {
-        var character = await _context.Characters.Where(c => c.Id == characterId).Include(c => c.Inventory).ThenInclude(i => i.Items).FirstOrDefaultAsync();
+        var character = await _context.Characters.Where(c => c.Id == characterId).Include(i => i.Items).FirstOrDefaultAsync();
         if (character is null)
             throw new System.Exception("Character not found.");
-        item.InventoryId = character.InventoryId;
-        _context.Items.Add(item);
+        character.Items.Add(item);
         await _context.SaveChangesAsync();
         return item;
     }
@@ -39,5 +50,16 @@ public class CharacterManager : ICharacterManager
         _context.Characters.Update(character);
         await _context.SaveChangesAsync();
         return skill;
+    }
+
+    public async Task<CustomRoll> AddCustomRoll(int characterId, CustomRoll customRoll)
+    {
+        var character = await _context.Characters.Where(c => c.Id == characterId).Include(c => c.Skills).FirstOrDefaultAsync();
+        if (character is null)
+            throw new System.Exception("Character not found.");
+        character.CustomRolls.Add(customRoll);
+        _context.Characters.Update(character);
+        await _context.SaveChangesAsync();
+        return customRoll;
     }
 }
